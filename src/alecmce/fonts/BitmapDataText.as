@@ -3,6 +3,7 @@ package alecmce.fonts
     import flash.display.BitmapData;
     import flash.errors.IllegalOperationError;
     import flash.geom.Point;
+    import flash.geom.Rectangle;
 
     public class BitmapDataText extends BitmapData
     {
@@ -35,13 +36,17 @@ package alecmce.fonts
 
                 var vo:CharacterVO = new CharacterVO();
                 vo.character = character;
-                vo.dx = i < max ? font.getKerning(character, characters[i + 1]) : 0;
+                vo.kerning = i < max ? font.getKerning(character, characters[i + 1]) : 0;
 
                 if (character != " ")
                 {
                     vo.data = font.getCharacter(character);
                     if (vo.data == null)
                         throw new IllegalOperationError("You cannot render bitmap text including characters not present in the bitmap font");
+                }
+                else
+                {
+                    vo.kerning += font.getSpace();
                 }
 
                 list.push(vo);
@@ -56,9 +61,9 @@ package alecmce.fonts
 
             var max:int = list.length - 1;
             for (var i:int = 0; i <= max; i++)
-                width += list[i].dx;
+                width += list[i].getWidth();
 
-            return Math.ceil(width) + list[max].getWidth();
+            return Math.ceil(width);
         }
 
         private function getLineHeight():int
@@ -69,7 +74,8 @@ package alecmce.fonts
             for (var i:int = 0; i < length; i++)
             {
                 var h:int = list[i].getHeight();
-                if (h > height) height = h;
+                if (h > height)
+                    height = h;
             }
 
             return height;
@@ -82,13 +88,11 @@ package alecmce.fonts
             var length:int = list.length;
             for (var i:int = 0; i < length; i++)
             {
-                if (list[i].character != " ")
-                {
-                    var data:BitmapData = list[i].data;
-                    copyPixels(data, data.rect, point, null, null, true);
-                }
+                var vo:CharacterVO = list[i];
+                if (vo.character != " ")
+                    copyPixels(vo.data, vo.data.rect, point, null, null, true);
 
-                point.x += list[i].dx;
+                point.x += vo.getWidth();
             }
         }
     }
@@ -100,16 +104,11 @@ class CharacterVO
 {
     public var character:String;
     public var data:BitmapData;
-    public var dx:Number;
-
-    public function toString():String
-    {
-        return character + " - " + dx;
-    }
+    public var kerning:Number;
 
     public function getWidth():Number
     {
-        return data ? data.width : 0;
+        return (data ? data.width : 0) + kerning;
     }
 
     public function getHeight():int

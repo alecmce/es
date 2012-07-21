@@ -6,15 +6,15 @@ package alecmce.fonts
     {
         private var config:BitmapFontConfig;
         private var characters:Array;
-        private var data:Object;
-        private var kerning:Object;
+        private var dataMap:Object;
+        private var kerningMap:Object;
         private var space:Number;
 
         public function BitmapFont()
         {
             characters = [];
-            data = {};
-            kerning = {};
+            dataMap = {};
+            kerningMap = {};
         }
 
         public function getConfig():BitmapFontConfig
@@ -34,7 +34,7 @@ package alecmce.fonts
 
         public function getCharacter(character:String):BitmapData
         {
-            return data[character];
+            return dataMap[character];
         }
 
         public function hasCharacter(character:String):Boolean
@@ -44,18 +44,20 @@ package alecmce.fonts
 
         public function setCharacter(character:String, bitmapData:BitmapData):void
         {
-            data[character] = bitmapData;
+            dataMap[character] = bitmapData;
             characters.push(character);
         }
 
         public function getKerning(first:String, second:String):Number
         {
-            return kerning[first+second] || space;
+            var id:String = first + second;
+            return kerningMap[id] || 0;
         }
 
-        public function setKerning(first:String, second:String, dx:Number):void
+        public function setKerning(first:String, second:String, kerning:Number):void
         {
-            kerning[first+second] = dx;
+            var id:String = first + second;
+            kerningMap[id] = kerning;
         }
 
         public function getSpace():Number

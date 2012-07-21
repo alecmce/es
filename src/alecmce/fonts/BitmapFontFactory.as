@@ -202,8 +202,12 @@ package alecmce.fonts
 
             var first:Rectangle = field.getCharBoundaries(0);
             var second:Rectangle = field.getCharBoundaries(1);
+            var kerning:Number = second.left - first.right;
 
-            font.setKerning(pair[0], pair[1], second.left - first.left);
+            font.setKerning(pair[0], pair[1], kerning);
+
+            if (kerning != 0)
+                trace(pair[0], pair[1], kerning);
         }
     }
 }
