@@ -1,7 +1,8 @@
 package alecmce.fonts.tools
 {
     import alecmce.fonts.BitmapFont;
-    import alecmce.fonts.BitmapFontParser;
+    import alecmce.fonts.BitmapFontDecoder;
+    import alecmce.fonts.BitmapTextField;
 
     import flash.display.Bitmap;
 
@@ -17,8 +18,6 @@ package alecmce.fonts.tools
     [SWF(width="800", height="600", backgroundColor="#FFCC99", frameRate="60")]
     public class BitmapFontReader extends Sprite
     {
-        private const PADDING:int = 3;
-        
         private var font:BitmapFont;
 
         public function BitmapFontReader()
@@ -43,38 +42,15 @@ package alecmce.fonts.tools
             stream.readBytes(bytes, 0, stream.bytesAvailable);
             bytes.uncompress();
 
-            var parser:BitmapFontParser = new BitmapFontParser();
-            font = parser.parse(bytes);
+            font = new BitmapFontDecoder().decode(bytes);
         }
 
         private function drawFont():void
         {
-            var chars:Array = font.getCharacters();
-
-            var x:int = 20;
-            var y:int = 20;
-            var dy:int = 0;
-
-            for each (var char:String in chars)
-            {
-                var data:BitmapData = font.getCharacter(char);
-
-                var bitmap:Bitmap = new Bitmap(data);
-                bitmap.x = x;
-                bitmap.y = y;
-                addChild(bitmap);
-
-                x += data.width + PADDING;
-                if (data.height > dy)
-                    dy += data.height;
-
-                if (x > stage.stageWidth - 40)
-                {
-                    x = 20;
-                    y += dy + PADDING;
-                    dy = 0;
-                }
-            }
+            var field:BitmapTextField = new BitmapTextField();
+            field.setFont(font);
+            field.setText("Hello World!");
+            addChild(field);
         }
     }
 }

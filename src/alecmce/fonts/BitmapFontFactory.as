@@ -1,7 +1,5 @@
 package alecmce.fonts
 {
-    import alecmce.fonts.tools.bitmapFontGenerator.*;
-    import flash.display.Bitmap;
     import flash.display.BitmapData;
     import flash.display.BlendMode;
     import flash.display.Sprite;
@@ -10,6 +8,7 @@ package alecmce.fonts
     import flash.geom.Matrix;
     import flash.geom.Rectangle;
     import flash.text.TextField;
+    import flash.text.TextField;
     import flash.text.TextFieldAutoSize;
     import flash.text.TextFormat;
 
@@ -17,13 +16,17 @@ package alecmce.fonts
 
     public class BitmapFontFactory
     {
-        private var config:FontConfig;
+        private var config:BitmapFontConfig;
         private var stage:Stage;
 
         private var format:TextFormat;
         private var font:BitmapFont;
 
         private var container:Sprite;
+        private var characterContainer:Sprite;
+        private var kerningPairContainer:Sprite;
+        private var spaceContainer:Sprite;
+
         private var character:String;
         private var field:TextField;
         private var index:int;
@@ -34,7 +37,7 @@ package alecmce.fonts
 
         private var _finished:Signal;
 
-        public function setConfig(config:FontConfig):void
+        public function setConfig(config:BitmapFontConfig):void
         {
             this.config = config;
         }
@@ -42,6 +45,11 @@ package alecmce.fonts
         public function setStage(stage:Stage):void
         {
             this.stage = stage;
+        }
+
+        public function get finished():Signal
+        {
+            return _finished ||= new Signal(BitmapFont);
         }
 
         public function start():void
@@ -53,11 +61,19 @@ package alecmce.fonts
                 throw new Error("Unable to start BitmapFontFactory - needs stage reference");
 
             container = new Sprite();
+            container.addChild(characterContainer = new Sprite());
+            container.addChild(kerningPairContainer = new Sprite());
+            container.addChild(spaceContainer = new Sprite());
+
             stage.addChild(container);
 
             font =  new BitmapFont();
+            font.setConfig(config);
+
             makeFormat();
-            makeTextFields();
+            makeSpace();
+            makeCharacters();
+            makeKerningPairs();
 
             stage.addEventListener(Event.ENTER_FRAME, waitFrameToEnsureTextIsRendered);
         }
@@ -65,51 +81,79 @@ package alecmce.fonts
         private function makeFormat():void
         {
             format = new TextFormat();
-            format.font = config.fontName;
-            format.size = config.fontSize;
+            format.font = config.getFontName();
+            format.size = config.getFontSize();
+            format.kerning = true;
         }
 
-        private function makeTextFields():void
+        private function makeSpace():void
         {
-            for each (var char:String in config.characters)
-                makeTextFieldFor(char);
+            spaceContainer.addChild(makeTextField(" M"));
         }
 
-        private function makeTextFieldFor(char:String):void
+        private function makeCharacters():void
+        {
+            for each (var char:String in config.getCharacters())
+                characterContainer.addChild(makeTextField(char));
+        }
+
+        private function makeKerningPairs():void
+        {
+            var characters:Array = config.getCharacters();
+            for each (var first:String in characters)
+            {
+                for each (var second:String in characters)
+                {
+                    if (first != " " && second != " ")
+                        kerningPairContainer.addChild(makeTextField(first + second));
+                }
+            }
+        }
+
+        private function makeTextField(text:String):TextField
         {
             var field:TextField = new TextField();
-            field.x = 50 + Math.random() * (stage.stageWidth - 100);
-            field.y = 50 + Math.random() * (stage.stageHeight - 100);
+            field.x = 50 + Math.random() * (stage.stageWidth - 100 - config.getFontSize());
+            field.y = 50 + Math.random() * (stage.stageHeight - 100 - config.getFontSize());
             field.defaultTextFormat = format;
             field.embedFonts = false;
-            field.width = int(format.size);
-            field.height = format.size + 20;
+            field.width = config.getFontSize() * 5;
+            field.height = config.getFontSize() + 20;
             field.selectable = false;
             field.wordWrap = true;
-            field.text = char;
+            field.text = text;
             field.autoSize = TextFieldAutoSize.LEFT;
-            container.addChild(field);
+            return field;
         }
 
         private function waitFrameToEnsureTextIsRendered(event:Event):void
         {
             stage.removeEventListener(Event.ENTER_FRAME, waitFrameToEnsureTextIsRendered);
+
+            measureSpace();
             convertTextFieldsIntoBitmaps();
+            measureKerningForPairs();
+
+            stage.removeChild(container);
             _finished && _finished.dispatch(font);
+        }
+
+        private function measureSpace():void
+        {
+            var field:TextField = spaceContainer.getChildAt(0) as TextField;
+            font.setSpace(field.getCharBoundaries(0).width);
         }
 
         private function convertTextFieldsIntoBitmaps():void
         {
-            var count:int = config.characters.length;
+            var count:int = config.getCharacters().length;
             for (index = 0; index < count; index++)
-            {
                 convertTextFieldAtIndex();
-            }
         }
 
         private function convertTextFieldAtIndex():void
         {
-            field = container.getChildAt(index) as TextField;
+            field = characterContainer.getChildAt(index) as TextField;
             character = field.text;
 
             getCharacterInfo();
@@ -143,9 +187,23 @@ package alecmce.fonts
                 font.setCharacter(character, bitmapData);
         }
 
-        public function get finished():Signal
+        private function measureKerningForPairs():void
         {
-            return _finished ||= new Signal(BitmapFont);
+            var count:int = config.getCharacters().length;
+            count *= count;
+            for (index = 0; index < count; index++)
+                measureKerningForPair();
+        }
+
+        private function measureKerningForPair():void
+        {
+            field = kerningPairContainer.getChildAt(index) as TextField;
+            var pair:Array = field.text.split("");
+
+            var first:Rectangle = field.getCharBoundaries(0);
+            var second:Rectangle = field.getCharBoundaries(1);
+
+            font.setKerning(pair[0], pair[1], second.left - first.left);
         }
     }
 }

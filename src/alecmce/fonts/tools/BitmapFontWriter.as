@@ -1,10 +1,10 @@
 package alecmce.fonts.tools
 {
     import alecmce.fonts.BitmapFont;
+    import alecmce.fonts.BitmapFontEncoder;
     import alecmce.fonts.BitmapFontFactory;
-    import alecmce.fonts.FontConfig;
+    import alecmce.fonts.BitmapFontConfig;
 
-    import flash.display.BitmapData;
     import flash.display.Sprite;
     import flash.net.FileReference;
     import flash.utils.ByteArray;
@@ -12,16 +12,14 @@ package alecmce.fonts.tools
     [SWF(width="800", height="600", backgroundColor="#FFCC99", frameRate="60")]
     public class BitmapFontWriter extends Sprite
     {
-        private var config:FontConfig;
-        private var bytes:ByteArray;
-        private var file:FileReference;
+        private var config:BitmapFontConfig;
 
         public function BitmapFontWriter()
         {
-            config = new FontConfig();
-            config.fontName = "Helvetica";
-            config.fontSize = 50;
-            config.characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789[]{}()?!@#$£".split("");
+            config = new BitmapFontConfig();
+            config.setFontName("Helvetica");
+            config.setFontSize(50);
+            config.setCharacters("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789[]{}()?!@#$£".split(""));
 
             var factory:BitmapFontFactory = new BitmapFontFactory();
             factory.setConfig(config);
@@ -32,40 +30,21 @@ package alecmce.fonts.tools
 
         private function onFactoryFinished(font:BitmapFont):void
         {
-            bytes = makeByteArray(font);
-            saveByteArray();
-        }
-
-        private function makeByteArray(font:BitmapFont):ByteArray
-        {
-            var bytes:ByteArray = new ByteArray();
-
-            var characters:Array = font.getCharacters();
-            for each (var char:String in characters)
-            {
-                var bitmap:BitmapData = font.getCharacter(char);
-                var data:ByteArray = bitmap.getPixels(bitmap.rect);
-
-                bytes.writeUnsignedInt(uint(char.charCodeAt(0)));
-                bytes.writeUnsignedInt(bitmap.width);
-                bytes.writeUnsignedInt(bitmap.height);
-                bytes.writeUnsignedInt(data.length);
-                bytes.writeBytes(data);
-            }
-
+            var bytes:ByteArray = new BitmapFontEncoder().encode(font);
             bytes.compress();
-            return bytes;
+
+            saveByteArray(bytes);
         }
 
-        private function saveByteArray():void
+        private function saveByteArray(bytes:ByteArray):void
         {
-            file = new FileReference();
+            var file:FileReference = new FileReference();
             file.save(bytes, getFilename());
         }
 
         private function getFilename():String
         {
-            return [config.fontName, config.fontSize, ".fnt"].join("");
+            return [config.getFontName(), config.getFontSize(), ".fnt"].join("");
         }
     }
 }
