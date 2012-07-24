@@ -2,7 +2,6 @@ package alecmce.console.view
 {
     import alecmce.console.model.ConsoleModel;
     import alecmce.console.signals.ConsoleLog;
-    import alecmce.console.view.components.ConsoleInput;
 
     import robotlegs.bender.bundles.mvcs.Mediator;
 
@@ -12,7 +11,7 @@ package alecmce.console.view
         private static const ACTION_PATTERN:String = "[0xFFEE00:${value}]";
 
         [Inject]
-        public var view:ConsoleInput;
+        public var view:ConsoleInputView;
 
         [Inject]
         public var console:ConsoleModel;

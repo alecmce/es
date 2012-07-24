@@ -4,15 +4,8 @@ package alecmce.fonts.tools
     import alecmce.fonts.BitmapFontDecoder;
     import alecmce.fonts.BitmapTextField;
 
-    import flash.display.Bitmap;
-
-    import flash.display.BitmapData;
     import flash.display.Sprite;
     import flash.events.Event;
-    import flash.filesystem.File;
-    import flash.filesystem.FileMode;
-    import flash.filesystem.FileStream;
-    import flash.utils.ByteArray;
     import flash.utils.ByteArray;
 
     [SWF(width="800", height="600", backgroundColor="#FFCC99", frameRate="60")]

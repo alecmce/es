@@ -8,7 +8,6 @@ package alecmce.fonts
     import flash.geom.Matrix;
     import flash.geom.Rectangle;
     import flash.text.TextField;
-    import flash.text.TextField;
     import flash.text.TextFieldAutoSize;
     import flash.text.TextFormat;
 

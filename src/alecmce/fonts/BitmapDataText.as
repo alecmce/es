@@ -3,7 +3,6 @@ package alecmce.fonts
     import flash.display.BitmapData;
     import flash.errors.IllegalOperationError;
     import flash.geom.Point;
-    import flash.geom.Rectangle;
 
     public class BitmapDataText extends BitmapData
     {

@@ -1,7 +1,6 @@
 package alecmce.console.view
 {
     import alecmce.console.signals.ConsoleLog;
-    import alecmce.console.view.components.ConsoleOutput;
 
     import robotlegs.bender.bundles.mvcs.Mediator;
 
@@ -11,7 +10,7 @@ package alecmce.console.view
         public var log:ConsoleLog;
 
         [Inject]
-        public var view:ConsoleOutput;
+        public var view:ConsoleOutputView;
 
         override public function initialize():void
         {

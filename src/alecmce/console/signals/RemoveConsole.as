@@ -4,5 +4,9 @@ package alecmce.console.signals
 
     final public class RemoveConsole extends Signal
     {
+        public function RemoveConsole()
+        {
+            super();
+        }
     }
 }

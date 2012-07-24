@@ -9,13 +9,14 @@ package alecmce.console
     import alecmce.console.signals.ListActions;
     import alecmce.console.signals.RegisterConsoleAction;
     import alecmce.console.signals.RemoveConsole;
-    import alecmce.console.signals.ResizeConsole;
     import alecmce.console.view.ConsoleInputMediator;
+    import alecmce.console.view.ConsoleInputView;
+    import alecmce.console.view.ConsoleMediator;
     import alecmce.console.view.ConsoleOutputMediator;
-    import alecmce.console.view.ConsoleViewMediator;
-    import alecmce.console.view.components.ConsoleInput;
-    import alecmce.console.view.components.ConsoleOutput;
-    import alecmce.console.view.components.ConsoleView;
+    import alecmce.console.view.ConsoleOutputView;
+    import alecmce.console.view.ConsoleView;
+
+    import flash.display.DisplayObjectContainer;
 
     import org.swiftsuspenders.Injector;
 
@@ -33,6 +34,9 @@ package alecmce.console
         [Inject]
         public var commandMap:ISignalCommandMap;
 
+        [Inject]
+        public var contextView:DisplayObjectContainer;
+
         [PostConstruct]
         public function setup():void
         {
@@ -41,6 +45,9 @@ package alecmce.console
             mapMediators();
 
             injector.getInstance(AddDefaultConsoleActions).dispatch();
+
+            var view:ConsoleView = new ConsoleView();
+            contextView.addChild(view);
         }
 
         private function mapModel():void
@@ -48,7 +55,6 @@ package alecmce.console
             injector.map(ConsoleModel).asSingleton();
             injector.map(ConsoleLog).asSingleton();
             injector.map(RemoveConsole).asSingleton();
-            injector.map(ResizeConsole).asSingleton();
         }
 
         private function mapCommands():void
@@ -60,9 +66,9 @@ package alecmce.console
 
         private function mapMediators():void
         {
-            mediatorMap.map(ConsoleInput).toMediator(ConsoleInputMediator);
-            mediatorMap.map(ConsoleOutput).toMediator(ConsoleOutputMediator);
-            mediatorMap.map(ConsoleView).toMediator(ConsoleViewMediator);
+            mediatorMap.map(ConsoleInputView).toMediator(ConsoleInputMediator);
+            mediatorMap.map(ConsoleOutputView).toMediator(ConsoleOutputMediator);
+            mediatorMap.map(ConsoleView).toMediator(ConsoleMediator);
         }
     }
 }
