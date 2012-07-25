@@ -1,35 +1,34 @@
-package talk.services
+package talk.factories
 {
-    import alecmce.entitysystem.extensions.concepts.Position;
-    import alecmce.entitysystem.extensions.concepts.Renderable;
+    import alecmce.entitysystem.extensions.view.Position;
     import alecmce.entitysystem.framework.Entity;
     import alecmce.fonts.BitmapFont;
     import alecmce.fonts.BitmapFonts;
 
+    import flash.display.BitmapData;
     import flash.errors.IllegalOperationError;
 
     import talk.data.Slide;
     import talk.data.SlideText;
 
-    public class SlideEntitiesFactory
+    public class SlideCharacterEntityFactory
     {
         [Inject]
         public var fonts:BitmapFonts;
 
         private var slide:Slide;
+        private var entities:Vector.<Entity>;
         private var slideText:SlideText;
         private var font:BitmapFont;
         private var text:String;
         private var list:Vector.<CharacterVO>;
-        private var entities:Vector.<Entity>;
         private var x:Number;
         private var y:Number;
 
         public function make(slide:Slide):Vector.<Entity>
         {
             this.slide = slide;
-
-            entities = new <Entity>[];
+            this.entities = new <Entity>[];
 
             makeTextEntities(slide.title);
             for each (var text:SlideText in slide.points)
@@ -121,8 +120,8 @@ package talk.services
 
         private function makeEntity(vo:CharacterVO):void
         {
-            var renderable:Renderable = new Renderable(vo.data);
-            var position:Position = new Position(x, y);
+            var renderable:BitmapData = vo.data;
+            var position:Position = new Position(x + slide.x, y + slide.y);
 
             var entity:Entity = new Entity();
             entity.add(position);

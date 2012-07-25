@@ -1,4 +1,4 @@
-package alecmce.entitysystem.extensions.renderer
+package alecmce.entitysystem.extensions.view.renderer
 {
     import alecmce.entitysystem.framework.System;
 

@@ -3,6 +3,7 @@ package alecmce.entitysystem.framework
     import org.flexunit.assertThat;
     import org.hamcrest.core.isA;
     import org.hamcrest.object.isFalse;
+    import org.hamcrest.object.isNull;
     import org.hamcrest.object.isTrue;
 
     public class EntitiesTest
@@ -45,6 +46,15 @@ package alecmce.entitysystem.framework
             entity.add(new MockComponent());
             entity.remove(MockComponent);
             assertThat(collection.has(entity), isFalse());
+        }
+
+        [Test]
+        public function whenOnlyEntityIsRemovedCollectionHeadIsNullified():void
+        {
+            var collection:Collection = entities.getCollection(new <Class>[MockComponent]);
+            entity.add(new MockComponent());
+            entity.remove(MockComponent);
+            assertThat(collection.head, isNull());
         }
 
         [Test]

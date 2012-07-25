@@ -13,6 +13,9 @@ package alecmce.entitysystem.framework
 
         public function addEntityIfMeetsRequirements(entity:Entity):void
         {
+            if (collection.has(entity))
+                return;
+
             for each (var klass:Class in requirements)
             {
                 if (!entity.has(klass))

@@ -38,8 +38,10 @@ package alecmce.console.model
 
             var name:String = data.shift();
             var signal:Signal = signalMap[name];
-            if (signal)
-                signal.dispatch.apply(this, data);
+            if (!signal)
+                return;
+
+            signal.dispatch.apply(this, data);
         }
 
         public function has(action:String):Boolean

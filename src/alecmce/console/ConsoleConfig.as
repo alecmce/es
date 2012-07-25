@@ -5,6 +5,7 @@ package alecmce.console
     import alecmce.console.controller.RegisterConsoleActionCommand;
     import alecmce.console.model.ConsoleModel;
     import alecmce.console.signals.AddDefaultConsoleActions;
+    import alecmce.console.signals.ClearConsole;
     import alecmce.console.signals.ConsoleLog;
     import alecmce.console.signals.ListActions;
     import alecmce.console.signals.RegisterConsoleAction;
@@ -42,12 +43,10 @@ package alecmce.console
         {
             mapModel();
             mapCommands();
+            mapViewSignals();
             mapMediators();
 
             injector.getInstance(AddDefaultConsoleActions).dispatch();
-
-            var view:ConsoleView = new ConsoleView();
-            contextView.addChild(view);
         }
 
         private function mapModel():void
@@ -62,6 +61,11 @@ package alecmce.console
             commandMap.map(RegisterConsoleAction).toCommand(RegisterConsoleActionCommand);
             commandMap.map(ListActions).toCommand(ListActionsCommand);
             commandMap.map(AddDefaultConsoleActions).toCommand(AddDefaultConsoleActionsCommand);
+        }
+
+        private function mapViewSignals():void
+        {
+            injector.map(ClearConsole).asSingleton();
         }
 
         private function mapMediators():void

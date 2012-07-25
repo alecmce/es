@@ -8,6 +8,8 @@ package
     import flash.display.Bitmap;
     import flash.display.BitmapData;
     import flash.display.Sprite;
+    import flash.display.Stage;
+    import flash.geom.Rectangle;
 
     import robotlegs.bender.bundles.mvcs.MVCSBundle;
     import robotlegs.bender.extensions.signalCommandMap.SignalCommandMapExtension;
@@ -20,39 +22,37 @@ package
     {
         private var context:Context;
 
-        private var bitmapData:BitmapData;
-        private var bitmap:Bitmap;
+        private var layers:Layers;
 
         public function Main()
         {
-            makeBitmapData();
-            makeBitmap();
+            makeLayers();
+            makeContext();
+        }
 
+        private function makeLayers():void
+        {
+            var size:Rectangle = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+            layers = new Layers(size);
+            addChild(layers);
+        }
+
+        private function makeContext():void
+        {
             context = new Context();
-            context.extend(MVCSBundle)
-                   .extend(SignalCommandMapExtension)
-                   .extend(EntitiesExtension)
-                   .extend(ConsoleExtension)
-                   .extend(ResizeExtension)
-                   .configure(EntitiesConfig)
-                   .configure(TalkConfig, this)
-                   .configure(TempConfig, this);
+            context.injector.map(Layers).toValue(layers);
 
-            context.injector.map(BitmapData).toValue(bitmapData);
+            context.extend(MVCSBundle)
+                    .extend(SignalCommandMapExtension)
+                    .extend(EntitiesExtension)
+                    .extend(ConsoleExtension)
+                    .extend(ResizeExtension)
+                    .configure(EntitiesConfig)
+                    .configure(TalkConfig, this)
+                    .configure(TempConfig, this);
+
             context.injector.getInstance(Startup).dispatch();
         }
 
-        private function makeBitmapData():void
-        {
-            var width:int = stage.stageWidth;
-            var height:int = stage.stageHeight;
-            bitmapData = new BitmapData(width, height, true, 0x00000000);
-        }
-
-        private function makeBitmap():void
-        {
-            bitmap = new Bitmap(bitmapData);
-            addChild(bitmap);
-        }
     }
 }

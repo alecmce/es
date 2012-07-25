@@ -1,7 +1,7 @@
 package alecmce.entitysystem.extensions.robotlegs
 {
-    import alecmce.entitysystem.extensions.renderer.FullBlitter;
-    import alecmce.entitysystem.extensions.renderer.Renderer;
+    import alecmce.entitysystem.extensions.view.renderer.FullBlitter;
+    import alecmce.entitysystem.extensions.view.renderer.Renderer;
     import alecmce.entitysystem.extensions.robotlegs.commands.StartAllSystemsCommand;
     import alecmce.entitysystem.extensions.robotlegs.commands.StartSystemCommand;
     import alecmce.entitysystem.extensions.robotlegs.commands.StopSystemCommand;

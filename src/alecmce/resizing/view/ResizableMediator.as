@@ -18,6 +18,7 @@ package alecmce.resizing.view
 
         override public function initialize():void
         {
+            trace(view + "is resizable!");
             var stage:Stage = (view as DisplayObject).stage;
             var rectangle:Rectangle = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 

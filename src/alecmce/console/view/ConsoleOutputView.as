@@ -1,6 +1,9 @@
 package alecmce.console.view
 {
     import alecmce.resizing.view.Resizable;
+    import alecmce.util.StageLifecycleUtil;
+
+    import flash.display.BlendMode;
 
     import flash.display.Sprite;
     import flash.geom.Rectangle;
@@ -12,6 +15,8 @@ package alecmce.console.view
 
     final public class ConsoleOutputView extends Sprite implements Resizable
     {
+        private static const DEFAULT_OUTPUT:String = "alecmce/console";
+
         private const PATTERN:RegExp = /\[0x(.+)\:(.+)\]/ig;
         private const HTML_TEMPLATE:String = "<font color='#$1'>$2</font>";
 
@@ -21,17 +26,32 @@ package alecmce.console.view
         private var lastSource:Signal;
         private var delegateMap:Dictionary;
 
+        private var lifecycle:StageLifecycleUtil;
+
         public function ConsoleOutputView()
         {
+            alpha = 0.8;
+            blendMode = BlendMode.LAYER;
+
             logged = [];
             delegateMap = new Dictionary();
 
             addChild(textfield = new TextField());
-            textfield.defaultTextFormat = new TextFormat("_sans", 14, 0xFFFFFF);
+            textfield.alpha = 0.6;
+            textfield.defaultTextFormat = new TextFormat("_sans", 14, 0xFFFFFF, true);
+            textfield.htmlText = DEFAULT_OUTPUT;
             textfield.selectable = false;
             textfield.multiline = true;
 
             mouseEnabled = false;
+
+            lifecycle = new StageLifecycleUtil(this);
+            lifecycle.addedToStage.add(onAddedToStage);
+        }
+
+        private function onAddedToStage():void
+        {
+            resize(new Rectangle(0, 0, stage.stageWidth, stage.stageHeight));
         }
 
         public function log(data:String):void
@@ -47,7 +67,7 @@ package alecmce.console.view
         {
             logged.length = 0;
             lastSource = null;
-            textfield.htmlText = "";
+            textfield.htmlText = DEFAULT_OUTPUT;
         }
 
         public function resize(rectangle:Rectangle):void
@@ -63,7 +83,7 @@ package alecmce.console.view
             textfield.height = h;
 
             graphics.clear();
-            graphics.beginFill(0x006600, 0.8);
+            graphics.beginFill(0x003300);
             graphics.drawRect(0, 0, width, height);
             graphics.endFill();
         }
