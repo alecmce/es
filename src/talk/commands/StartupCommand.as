@@ -12,7 +12,7 @@ package talk.commands
     import talk.signals.MakeCamera;
     import talk.signals.MakeSlideEntities;
     import talk.signals.SetupFonts;
-    import talk.systems.PileSystem;
+    import talk.systems.CollapseSystem;
     import talk.systems.SlideSelectionSystem;
 
     public class StartupCommand
@@ -36,7 +36,7 @@ package talk.commands
         public var renderer:Renderer;
 
         [Inject]
-        public var piles:PileSystem;
+        public var piles:CollapseSystem;
 
         [Inject]
         public var slideSelection:SlideSelectionSystem;

@@ -2,9 +2,9 @@ package talk.signals
 {
     import org.osflash.signals.Signal;
 
-    public class CreatePhysicsExample extends Signal
+    public class CollapseVisible extends Signal
     {
-        public function CreatePhysicsExample()
+        public function CollapseVisible()
         {
             super();
         }
