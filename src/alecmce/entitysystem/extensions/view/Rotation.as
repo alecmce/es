@@ -48,11 +48,11 @@ package alecmce.entitysystem.extensions.view
             return angle;
         }
 
-        public function setAngle(value:Number):void
+        public function setAngle(angle:Number):void
         {
-            this.angle = value;
-            matrix[0] = matrix[3] = Math.sin(value);
-            matrix[2] = Math.cos(value);
+            this.angle = angle;
+            matrix[0] = matrix[3] = Math.cos(angle);
+            matrix[2] = Math.sin(angle);
             matrix[1] = -matrix[2];
         }
     }

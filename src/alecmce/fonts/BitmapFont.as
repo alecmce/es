@@ -1,6 +1,7 @@
 package alecmce.fonts
 {
     import flash.display.BitmapData;
+    import flash.geom.Point;
 
     public class BitmapFont
     {

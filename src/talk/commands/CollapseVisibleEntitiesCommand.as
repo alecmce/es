@@ -13,10 +13,11 @@ package talk.commands
 
     public class CollapseVisibleEntitiesCommand
     {
-        private const PADDING:int = 50;
+        private const PADDING:int = 0;
 
         [Inject]
         public var entities:Entities;
+
         [Inject]
         public var camera:Camera;
 

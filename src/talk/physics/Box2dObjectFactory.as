@@ -1,5 +1,6 @@
 package talk.physics
 {
+    import Box2D.Collision.Shapes.b2MassData;
     import Box2D.Collision.Shapes.b2PolygonShape;
     import Box2D.Common.Math.b2Vec2;
     import Box2D.Dynamics.b2Body;
@@ -11,6 +12,11 @@ package talk.physics
 
     public class Box2dObjectFactory
     {
+        private const DENSITY:Number = 2.0;
+        private const FRICTION:Number = 0.5;
+        private const RESTITUTION:Number = 0.0;
+        private const MASS_SCALAR:Number = 1.0;
+
         private var world:b2World;
 
         public function setWorld(world:b2World):void
@@ -20,54 +26,83 @@ package talk.physics
 
         public function makeStaticRect(rect:Rectangle):void
         {
+            var w:Number = rect.width * 0.5;
+            var h:Number = rect.height * 0.5;
+
             var definition:b2BodyDef = new b2BodyDef();
-            definition.position.Set(rect.left, rect.top);
+            definition.position.Set(rect.x + w, rect.y + h);
 
             var shape:b2PolygonShape = new b2PolygonShape();
-            shape.SetAsBox(rect.width, rect.height);
+            shape.SetAsBox(w, h);
 
             var fixture:b2FixtureDef = new b2FixtureDef();
             fixture.shape = shape;
-            fixture.friction = 0.3;
-            fixture.density = 0;
+            fixture.friction = FRICTION;
+            fixture.restitution = RESTITUTION;
 
             var body:b2Body = world.CreateBody(definition);
             body.CreateFixture(fixture);
         }
 
-        public function makeDynamicRect(rect:Rectangle, userData:* = null):b2Body
+        public function makeRoughFloor(x:int, y:int, width:int):void
         {
+            for (var i:int = 0; i <= width; i ++)
+            {
+                var definition:b2BodyDef = new b2BodyDef();
+                definition.position.Set(x + i, y);
+
+                var shape:b2PolygonShape = new b2PolygonShape();
+                shape.SetAsOrientedBox(Math.random(), Math.random(), new b2Vec2(), Math.random() * Math.PI * 2);
+
+                var fixture:b2FixtureDef = new b2FixtureDef();
+                fixture.shape = shape;
+                fixture.friction = FRICTION;
+                fixture.restitution = RESTITUTION;
+
+                var body:b2Body = world.CreateBody(definition);
+                body.CreateFixture(fixture);
+            }
+        }
+
+        public function makeDynamicRect(rect:Rectangle):b2Body
+        {
+            var w:Number = rect.width * 0.5;
+            var h:Number = rect.height * 0.5;
+
             var definition:b2BodyDef = new b2BodyDef();
-            definition.position.Set(rect.left, rect.top);
+            definition.position.Set(rect.x + w, rect.y + h);
+            definition.type = b2Body.b2_dynamicBody;
 
             var shape:b2PolygonShape = new b2PolygonShape();
-            shape.SetAsBox(rect.width, rect.height);
+            shape.SetAsBox(w, h);
 
             var fixture:b2FixtureDef = new b2FixtureDef();
             fixture.shape = shape;
-            fixture.density = 1.0;
-            fixture.friction - 0.5;
-            fixture.restitution = 0.2;
+            fixture.density = DENSITY;
+            fixture.friction = FRICTION;
+            fixture.restitution = RESTITUTION;
 
             var body:b2Body = world.CreateBody(definition);
             body.CreateFixture(fixture);
+            body.SetAngularDamping(0.2);
 
-            if (userData)
-                definition.userData = userData;
+            var mass:b2MassData = new b2MassData();
+            mass.mass = w * h * MASS_SCALAR;
+            body.SetMassData(mass);
+
 
             return body
         }
 
-        public function applyRandomForce(body:b2Body):void
+        public function applyRandomForce(body:b2Body, force:Number, angular:Number):void
         {
-            var dx:Number = Math.random() - 0.5;
-            var dy:Number = Math.random() - 0.5;
-            var px:Number = (Math.random() - 0.5) * 0.5;
-            var py:Number = (Math.random() - 0.5) * 0.5;
+            var angle:Number = Math.random() * Math.PI * 2;
 
-            var force:b2Vec2 = new b2Vec2(dx, dy);
-            var position:b2Vec2 = new b2Vec2(px, py);
-            body.ApplyForce(force, position);
+            var dx:Number = Math.cos(angle) * force;
+            var dy:Number = Math.sin(angle) * force;
+
+            body.SetLinearVelocity(new b2Vec2(dx, dy));
+            body.SetAngularVelocity((Math.random() - 0.5) * angular);
         }
     }
 }

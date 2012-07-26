@@ -69,14 +69,14 @@ package alecmce.entitysystem.extensions.view.renderer
 
                     if (pos.hasRotation())
                     {
-                        point.setTo(x, y);
-                        canvas.copyPixels(data, data.rect, point, null, null, true);
-                    }
-                    else
-                    {
                         var r:Vector.<Number> = pos.rotation.getMatrix();
                         matrix.setTo(r[0], r[1], r[2], r[3], x, y);
                         canvas.draw(data, matrix, null, BlendMode.NORMAL, null, true);
+                    }
+                    else
+                    {
+                        point.setTo(x, y);
+                        canvas.copyPixels(data, data.rect, point, null, null, true);
                     }
                 }
             }

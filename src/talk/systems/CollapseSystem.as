@@ -1,7 +1,10 @@
 package talk.systems
 {
+    import Box2D.Common.Math.b2Mat22;
+    import Box2D.Common.Math.b2Transform;
     import Box2D.Common.Math.b2Vec2;
     import Box2D.Dynamics.b2Body;
+    import Box2D.Dynamics.b2DebugDraw;
     import Box2D.Dynamics.b2World;
 
     import alecmce.entitysystem.extensions.view.Position;
@@ -12,6 +15,7 @@ package talk.systems
     import alecmce.entitysystem.framework.System;
 
     import flash.display.BitmapData;
+    import flash.display.Sprite;
     import flash.geom.Rectangle;
 
     import talk.data.Collapsing;
@@ -20,12 +24,13 @@ package talk.systems
     public class CollapseSystem implements System
     {
         private const TO_SCREEN:int = 30;
-        private const TO_WORLD:Number = 1 / TO_SCREEN;
+        private const TO_SIMULATION:Number = 1 / TO_SCREEN;
         private const VELOCITY_ITERATIONS:int = 10;
         private const POSITION_ITERATIONS:int = 10;
+        private const WIDTH_SCALAR:Number = 0.6;
+        private const HEIGHT_SCALAR:Number = 0.5;
 
-        private static const GRAVITY:Number = 0.1;
-        private static const RESTITUTION:Number = 0.8;
+        public var isDebug:Boolean = false;
 
         [Inject]
         public var entities:Entities;
@@ -37,18 +42,25 @@ package talk.systems
         private var node:Node;
 
         private var factory:Box2dObjectFactory;
-        private var gravity:b2Vec2;
+        private var debug:Sprite;
         private var simulation:b2World;
+        private var drawer:b2DebugDraw;
+        private var matrix:Vector.<Number>;
 
         [PostConstruct]
         public function setup():void
         {
             collection = entities.getCollection(new <Class>[Collapsing, Position, BitmapData]);
+            factory = new Box2dObjectFactory();
+            matrix = new Vector.<Number>(4, true);
         }
 
         public function start(time:int):void
         {
             setupSimulation();
+
+            if (isDebug)
+                addDebugRendering();
 
             for (node = collection.head; node; node = node.next)
                 addEntityToSimulation(node.entity);
@@ -59,27 +71,40 @@ package talk.systems
 
         public function update(time:int, delta:int):void
         {
-            simulation.Step(delta, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
+            simulation.Step(delta * 0.001, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
 
-            var allAtRest:Boolean = true;
+            if (isDebug)
+                simulation.DrawDebugData();
 
             for (node = collection.head; node; node = node.next)
             {
                 var entity:Entity = node.entity;
-
                 var body:b2Body = entity.get(b2Body);
+
                 var bodyPos:b2Vec2 = body.GetPosition();
+                var x:Number = bodyPos.x;
+                var y:Number = bodyPos.y;
+
+                var data:UserData = body.GetUserData();
+                var w:Number = data.w;
+                var h:Number = data.h;
+
+                var R:b2Mat22 = body.GetTransform().R;
+                var a:Number = R.col1.x;
+                var b:Number = R.col1.y;
+                var c:Number = R.col2.x;
+                var d:Number = R.col2.y;
+
+                matrix[0] = a;
+                matrix[1] = b;
+                matrix[2] = c;
+                matrix[3] = d;
 
                 var pos:Position = entity.get(Position);
-                pos.x = bodyPos.x * TO_SCREEN;
-                pos.y = bodyPos.y * TO_SCREEN;
-                pos.rotation.setAngle(body.GetAngle());
-
-                allAtRest &&= body.IsAwake();
+                pos.rotation.setMatrix(matrix);
+                pos.x = (x - a * w + b * h) * TO_SCREEN;
+                pos.y = (y + c * w - d * h) * TO_SCREEN;
             }
-
-            if (allAtRest)
-                removeAllFromSimulation();
         }
 
         public function stop(time:int):void
@@ -89,42 +114,66 @@ package talk.systems
 
             collection.entityAdded.remove(addEntityToSimulation);
             collection.entityRemoved.remove(removeEntityFromSimulation);
+
+            if (debug)
+                layers.main.removeChild(debug);
         }
 
         private function setupSimulation():void
         {
-            factory = new Box2dObjectFactory();
-
-            gravity = new b2Vec2(0, 10);
+            var gravity:b2Vec2 = new b2Vec2(0, 10);
 
             simulation = new b2World(gravity, true);
             factory.setWorld(simulation);
 
             var rect:Rectangle = layers.getSize().clone();
-            rect.left *= TO_WORLD;
-            rect.top *= TO_WORLD;
-            rect.right *= TO_WORLD;
-            rect.bottom *= TO_WORLD;
+            rect.left *= TO_SIMULATION;
+            rect.top *= TO_SIMULATION;
+            rect.right *= TO_SIMULATION;
+            rect.bottom *= TO_SIMULATION;
 
             factory.makeStaticRect(new Rectangle(rect.left, rect.bottom, rect.width, 1));
             factory.makeStaticRect(new Rectangle(rect.left - 1, rect.top, 1, rect.height));
             factory.makeStaticRect(new Rectangle(rect.right, rect.top, 1, rect.height));
+
+            factory.makeRoughFloor(rect.left, rect.bottom, rect.width);
+        }
+
+        private function addDebugRendering():void
+        {
+            debug = new Sprite();
+            layers.dialog.addChild(debug);
+
+            drawer = new b2DebugDraw();
+            drawer.SetSprite(debug);
+            drawer.SetDrawScale(TO_SCREEN);
+            drawer.SetFillAlpha(0.5);
+            drawer.SetLineThickness(1);
+            drawer.SetFlags(b2DebugDraw.e_shapeBit);
+
+            simulation.SetDebugDraw(drawer);
         }
 
         private function addEntityToSimulation(entity:Entity):void
         {
-            var entity:Entity = node.entity;
             var bitmap:BitmapData = entity.get(BitmapData);
             var pos:Position = entity.get(Position);
 
             var rect:Rectangle = new Rectangle();
-            rect.left = pos.x * TO_WORLD;
-            rect.top = pos.y * TO_WORLD;
-            rect.width = bitmap.width * TO_WORLD;
-            rect.height = bitmap.height * TO_WORLD;
+            rect.x = pos.x * TO_SIMULATION;
+            rect.y = pos.y * TO_SIMULATION;
+            rect.width = bitmap.width * TO_SIMULATION * WIDTH_SCALAR;
+            rect.height = bitmap.height * TO_SIMULATION * HEIGHT_SCALAR;
 
-            var body:b2Body = factory.makeDynamicRect(rect, entity);
-            factory.applyRandomForce(body);
+            var data:UserData = new UserData();
+            data.entity = entity;
+            data.w = rect.width * 0.5;
+            data.h = rect.height * 0.5;
+
+            var body:b2Body = factory.makeDynamicRect(rect);
+            factory.applyRandomForce(body, 1, 0.1);
+
+            body.SetUserData(data);
             entity.add(body);
         }
 
@@ -148,4 +197,13 @@ package talk.systems
             }
         }
     }
+}
+
+import alecmce.entitysystem.framework.Entity;
+
+class UserData
+{
+    public var entity:Entity;
+    public var w:Number;
+    public var h:Number;
 }

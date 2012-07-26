@@ -21,7 +21,11 @@ package talk.commands
 
         public function execute():void
         {
-            var slide:Slide = slides.slides[int(index)];
+            var i:int = int(index);
+            if (i < 0 || slides.slides.length < i)
+                return;
+
+            var slide:Slide = slides.slides[i];
             var selected:Selected = new Selected();
 
             // TODO this isn't the right way to do it, we need a go-to entity for each slide
