@@ -54,15 +54,14 @@ package talk.commands
         {
             setupFonts.dispatch();
             makeCamera.dispatch();
-            makeSlideEntities.dispatch(slides.slides[0]);
-            makeSlideEntities.dispatch(slides.slides[1]);
+            makeSlideEntities.dispatch(slides.list[0]);
+            makeSlideEntities.dispatch(slides.list[1]);
 
             displayUpdater.setContainer(layers.main);
             renderer.setCanvas(layers.canvas.bitmapData);
 
             startSystem.dispatch(renderer);
             startSystem.dispatch(displayUpdate);
-            startSystem.dispatch(slideSelection);
             startAllSystems.dispatch();
         }
     }

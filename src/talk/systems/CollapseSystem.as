@@ -19,7 +19,7 @@ package talk.systems
 
     import talk.data.Collapsing;
     import talk.data.Slide;
-    import talk.physics.Box2dObjectFactory;
+    import talk.factories.Box2dObjectFactory;
 
     public class CollapseSystem implements System
     {
@@ -182,8 +182,8 @@ package talk.systems
         private function removeEntityFromSimulation(entity:Entity):void
         {
             var body:b2Body = entity.get(b2Body);
-            simulation.DestroyBody(body);
             entity.remove(b2Body);
+            entity.remove(Collapsing);
         }
 
         private function removeAllFromSimulation():void

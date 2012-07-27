@@ -44,6 +44,11 @@ package alecmce.entitysystem.framework
                 removeSystem(system, i);
         }
 
+        public function getList():Vector.<System>
+        {
+            return list.concat();
+        }
+
         public function start():void
         {
             if (!isRunning)

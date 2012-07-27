@@ -5,10 +5,15 @@ package talk.systems
     import alecmce.entitysystem.framework.Entities;
     import alecmce.entitysystem.framework.Entity;
     import alecmce.entitysystem.framework.System;
+    import alecmce.entitysystem.framework.Systems;
     import alecmce.math.easing.Expo;
     import alecmce.math.easing.Quad;
 
+    import talk.data.Selected;
+
     import talk.data.Slide;
+    import talk.data.Slides;
+    import talk.data.Slides;
 
     public class SlideSelectionSystem implements System
     {
@@ -17,6 +22,9 @@ package talk.systems
 
         [Inject]
         public var entities:Entities;
+
+        [Inject]
+        public var systems:Systems;
 
         [Inject]
         public var camera:Camera;
@@ -34,7 +42,7 @@ package talk.systems
         [PostConstruct]
         public function setup():void
         {
-            collection = entities.getCollection(new <Class>[Slide, Selected]);
+            collection = entities.getCollection(new <Class>[Slides, Slide, Selected]);
         }
 
         public function start(time:int):void
@@ -55,8 +63,7 @@ package talk.systems
                 if (value > DURATION)
                 {
                     proportion = 1;
-                    selected.remove(Selected);
-                    selected = null;
+                    systems.remove(this);
                 }
                 else
                 {

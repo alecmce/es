@@ -15,6 +15,7 @@ package alecmce.entitysystem.framework
         private var _name:String;
 
         private var components:Dictionary;
+        private var deleting:Dictionary;
 
         public function Entity(name:String = "")
         {
@@ -24,6 +25,7 @@ package alecmce.entitysystem.framework
             componentRemoved = new Signal(Entity, Class);
 
             components = new Dictionary();
+            deleting = new Dictionary();
         }
 
         public function get id():int
@@ -45,10 +47,12 @@ package alecmce.entitysystem.framework
 
         public function remove(klass:Class):void
         {
-            if (components[klass])
+            if (components[klass] && !deleting[klass])
             {
+                deleting[klass] = true;
                 componentRemoved.dispatch(this, klass);
                 delete components[klass];
+                delete deleting[klass];
             }
         }
 

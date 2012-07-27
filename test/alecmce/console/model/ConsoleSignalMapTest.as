@@ -28,7 +28,7 @@ package alecmce.console.model
             var signal:Signal = new MockDataSignal();
             signal.addOnce(onSignal);
 
-            console.register("test", signal);
+            console.register("talk", signal);
             console.execute("test hello");
 
             assertThat(data, equalTo("hello"));

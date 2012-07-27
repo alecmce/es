@@ -41,14 +41,14 @@ package alecmce.entitysystem.framework
         [Test]
         public function namedEntityRoundtrips():void
         {
-            var entity:Entity = new Entity("test");
+            var entity:Entity = new Entity("talk");
             entities.addEntity(entity);
 
             var alternate:Entities = new Entities();
             var data:String = io.stringify(entities);
             io.parse(alternate, data);
 
-            assertThat(alternate.getNamedEntity("test"), isNotNull());
+            assertThat(alternate.getNamedEntity("talk"), isNotNull());
         }
 
         [Test]

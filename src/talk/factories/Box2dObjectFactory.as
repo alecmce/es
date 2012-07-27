@@ -1,4 +1,4 @@
-package talk.physics
+package talk.factories
 {
     import Box2D.Collision.Shapes.b2MassData;
     import Box2D.Collision.Shapes.b2PolygonShape;
@@ -49,7 +49,7 @@ package talk.physics
             for (var i:int = 0; i <= width; i ++)
             {
                 var definition:b2BodyDef = new b2BodyDef();
-                definition.position.Set(x + i, y);
+                definition.position.Set(x + i, y - 0.5);
 
                 var shape:b2PolygonShape = new b2PolygonShape();
                 shape.SetAsOrientedBox(Math.random(), Math.random(), new b2Vec2(), Math.random() * Math.PI * 2);

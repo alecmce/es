@@ -15,14 +15,14 @@ package alecmce.entitysystem.framework
         public function before():void
         {
             entities = new Entities();
-            entity = new Entity("test");
+            entity = new Entity("talk");
             entities.addEntity(entity);
         }
 
         [Test]
         public function canGetEntity():void
         {
-            assertThat(entities.getNamedEntity("test"), isA(Entity));
+            assertThat(entities.getNamedEntity("talk"), isA(Entity));
         }
 
         [Test]

@@ -16,15 +16,15 @@ package alecmce.console.model
         [Test]
         public function canAddHistory():void
         {
-            history.add("test");
+            history.add("talk");
             assertThat(history.length, equalTo(1));
         }
 
         [Test]
         public function canGetPreviousItem():void
         {
-            history.add("test");
-            assertThat(history.getPrevious(), equalTo("test"));
+            history.add("talk");
+            assertThat(history.getPrevious(), equalTo("talk"));
         }
 
         [Test]

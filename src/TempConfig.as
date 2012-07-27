@@ -1,8 +1,12 @@
 package
 {
+    import alecmce.entitysystem.framework.Entities;
+    import alecmce.entitysystem.framework.Entity;
     import alecmce.graphics.Brush;
 
     import org.swiftsuspenders.Injector;
+
+    import talk.data.Selected;
 
     import talk.data.Slide;
     import talk.data.SlideText;
@@ -13,14 +17,43 @@ package
         [Inject]
         public var injector:Injector;
 
+        [Inject]
+        public var entities:Entities;
+
+        private var slides:Slides;
+
         [PostConstruct]
         public function setup():void
         {
-            var slides:Slides = new Slides();
-            slides.index = 0;
-            slides.slides = new <Slide>[makeFirstSlide(), makeSecondSlide()];
+            makeSlides();
+            makeSlideEntities();
+            selectFirstSlide();
 
             injector.map(Slides).toValue(slides);
+        }
+
+        private function makeSlides():void
+        {
+            slides = new Slides();
+            slides.index = 0;
+            slides.list = new <Slide>[makeFirstSlide(), makeSecondSlide()];
+        }
+
+        private function makeSlideEntities():void
+        {
+            for each (var slide:Slide in slides.list)
+            {
+                var entity:Entity = new Entity();
+                entity.add(slide);
+                entity.add(slides);
+                slide.entity = entity;
+                entities.addEntity(entity);
+            }
+        }
+
+        private function selectFirstSlide():void
+        {
+            slides.list[0].entity.add(new Selected());
         }
 
         private function makeFirstSlide():Slide

@@ -1,6 +1,5 @@
 package talk.commands
 {
-    import alecmce.entitysystem.extensions.view.Camera;
     import alecmce.entitysystem.extensions.view.Position;
     import alecmce.entitysystem.framework.Collection;
     import alecmce.entitysystem.framework.Entities;
@@ -10,13 +9,14 @@ package talk.commands
 
     import flash.display.BitmapData;
 
-    import talk.data.Collapsing;
-
     import talk.data.Rising;
-    import talk.systems.CollapseSystem;
+    import talk.data.Selected;
+    import talk.data.Slide;
+    import talk.data.Slides;
+    import talk.signals.RemoveSelectedSlideSystems;
     import talk.systems.RiseSystem;
 
-    public class RiseVisibleEntitiesCommand
+    public class RiseSlideEntitiesCommand
     {
         private const PADDING:int = 0;
 
@@ -24,49 +24,53 @@ package talk.commands
         public var entities:Entities;
 
         [Inject]
+        public var removeSelectedSlideSystems:RemoveSelectedSlideSystems;
+
+        [Inject]
         public var systems:Systems;
 
         [Inject]
         public var rise:RiseSystem;
 
-        [Inject]
-        public var collapse:CollapseSystem;
-
-        [Inject]
-        public var camera:Camera;
+        private var entity:Entity;
+        private var selected:Slide;
 
         public function execute():void
         {
+            getSelectedSlide();
+            if (!selected)
+                return;
+
+            removeSelectedSlideSystems.dispatch();
             addRisingComponentToAllVisibleEntities();
-            endCollapseSystem();
             startRiseSystem();
+        }
+
+        private function getSelectedSlide():void
+        {
+            var collection:Collection = entities.getCollection(new <Class>[Slides, Slide, Selected]);
+            if (collection.head)
+            {
+                entity = collection.head.entity;
+                selected = entity.get(Slide);
+            }
         }
 
         private function addRisingComponentToAllVisibleEntities():void
         {
-            var collection:Collection = entities.getCollection(new <Class>[Position, BitmapData]);
+            var collection:Collection = entities.getCollection(new <Class>[Slide, Position, BitmapData]);
 
             for (var node:Node = collection.head; node; node = node.next)
             {
                 var entity:Entity = node.entity;
-                var position:Position = entity.get(Position);
-                var data:BitmapData = entity.get(BitmapData);
-
-                if (camera.contains(position.x, position.y, PADDING))
-                {
-                    entity.remove(Collapsing);
+                if (entity.get(Slide) == selected)
                     entity.add(new Rising());
-                }
             }
-        }
-
-        private function endCollapseSystem():void
-        {
-            systems.remove(collapse);
         }
 
         private function startRiseSystem():void
         {
+            entity.add(rise);
             systems.add(rise);
         }
     }

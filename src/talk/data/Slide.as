@@ -1,9 +1,12 @@
 package talk.data
 {
+    import alecmce.entitysystem.framework.Entity;
     import alecmce.graphics.Brush;
 
     public class Slide
     {
+        public var entity:Entity;
+
         public var x:int;
         public var y:int;
         public var width:int;

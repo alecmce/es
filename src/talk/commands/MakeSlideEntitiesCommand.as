@@ -62,6 +62,7 @@ package talk.commands
             var entity:Entity = new Entity();
             entity.add(position);
             entity.add(display);
+            entity.add(slide);
 
             entities.addEntity(entity);
         }

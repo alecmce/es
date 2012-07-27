@@ -12,18 +12,22 @@ package
 
     import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 
-    import talk.commands.CollapseVisibleEntitiesCommand;
+    import talk.commands.CollapseSlideEntitiesCommand;
     import talk.commands.GotoSlideCommand;
     import talk.commands.MakeSlideEntitiesCommand;
-    import talk.commands.RiseVisibleEntitiesCommand;
+    import talk.commands.RemoveSelectedSlideSystemsCommand;
+    import talk.commands.RiseSlideEntitiesCommand;
     import talk.commands.SetupFontsCommand;
+    import talk.commands.InvaderSlideEntitiesCommand;
     import talk.commands.StartupCommand;
     import talk.factories.SlideCharacterEntityFactory;
     import talk.signals.CollapseVisible;
     import talk.signals.GotoSlide;
     import talk.signals.MakeSlideEntities;
+    import talk.signals.RemoveSelectedSlideSystems;
     import talk.signals.RiseVisible;
     import talk.signals.SetupFonts;
+    import talk.signals.SpaceInvadersVisible;
     import talk.signals.Startup;
     import talk.systems.CollapseSystem;
     import talk.systems.RiseSystem;
@@ -59,9 +63,11 @@ package
             commandMap.map(Startup).toCommand(StartupCommand);
             commandMap.map(SetupFonts).toCommand(SetupFontsCommand);
             commandMap.map(MakeSlideEntities).toCommand(MakeSlideEntitiesCommand);
-            commandMap.map(CollapseVisible).toCommand(CollapseVisibleEntitiesCommand);
-            commandMap.map(RiseVisible).toCommand(RiseVisibleEntitiesCommand);
+            commandMap.map(CollapseVisible).toCommand(CollapseSlideEntitiesCommand);
+            commandMap.map(RiseVisible).toCommand(RiseSlideEntitiesCommand);
+            commandMap.map(SpaceInvadersVisible).toCommand(InvaderSlideEntitiesCommand);
             commandMap.map(GotoSlide).toCommand(GotoSlideCommand);
+            commandMap.map(RemoveSelectedSlideSystems).toCommand(RemoveSelectedSlideSystemsCommand);
 
             layers.console.addChild(new ConsoleView());
 
@@ -70,6 +76,7 @@ package
 
             makeRiseAction();
             makeCollapseAction();
+            makeSpaceInvaderAction();
             makeGotoSlideAction();
         }
 
@@ -87,6 +94,14 @@ package
             action.name = "collapse";
             action.description = "creates a simulation that collapses all visible entities";
             registerConsole.dispatch(action, injector.getInstance(CollapseVisible));
+        }
+
+        private function makeSpaceInvaderAction():void
+        {
+            var action:ConsoleAction = new ConsoleAction();
+            action.name = "invaders";
+            action.description = "makes space invaders out of visible entities";
+            registerConsole.dispatch(action, injector.getInstance(SpaceInvadersVisible));
         }
 
         private function makeGotoSlideAction():void
