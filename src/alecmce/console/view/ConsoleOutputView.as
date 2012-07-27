@@ -44,14 +44,6 @@ package alecmce.console.view
             textfield.multiline = true;
 
             mouseEnabled = false;
-
-            lifecycle = new StageLifecycleUtil(this);
-            lifecycle.addedToStage.add(onAddedToStage);
-        }
-
-        private function onAddedToStage():void
-        {
-            resize(new Rectangle(0, 0, stage.stageWidth, stage.stageHeight));
         }
 
         public function log(data:String):void

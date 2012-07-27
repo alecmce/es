@@ -11,11 +11,12 @@ package talk.commands
     import flash.display.BitmapData;
 
     import talk.data.Collapsing;
+
     import talk.data.Rising;
     import talk.systems.CollapseSystem;
     import talk.systems.RiseSystem;
 
-    public class CollapseVisibleEntitiesCommand
+    public class RiseVisibleEntitiesCommand
     {
         private const PADDING:int = 0;
 
@@ -36,37 +37,37 @@ package talk.commands
 
         public function execute():void
         {
-            addCollapsingComponentToAllVisibleEntities();
-            startCollapseSystem();
-            endRiseSystem();
+            addRisingComponentToAllVisibleEntities();
+            endCollapseSystem();
+            startRiseSystem();
         }
 
-        private function addCollapsingComponentToAllVisibleEntities():void
+        private function addRisingComponentToAllVisibleEntities():void
         {
             var collection:Collection = entities.getCollection(new <Class>[Position, BitmapData]);
 
             for (var node:Node = collection.head; node; node = node.next)
             {
-                var entity:Entity = node.entity
+                var entity:Entity = node.entity;
                 var position:Position = entity.get(Position);
                 var data:BitmapData = entity.get(BitmapData);
 
                 if (camera.contains(position.x, position.y, PADDING))
                 {
-                    entity.remove(Rising);
-                    entity.add(new Collapsing());
+                    entity.remove(Collapsing);
+                    entity.add(new Rising());
                 }
             }
         }
 
-        private function startCollapseSystem():void
+        private function endCollapseSystem():void
         {
-            systems.add(collapse);
+            systems.remove(collapse);
         }
 
-        private function endRiseSystem():void
+        private function startRiseSystem():void
         {
-            systems.remove(rise);
+            systems.add(rise);
         }
     }
 }

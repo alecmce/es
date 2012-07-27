@@ -1,6 +1,4 @@
 package talk.data
 {
-    public class Collapsing
-    {
-    }
+    public class Collapsing {}
 }

@@ -36,9 +36,6 @@ package talk.commands
         public var renderer:Renderer;
 
         [Inject]
-        public var piles:CollapseSystem;
-
-        [Inject]
         public var slideSelection:SlideSelectionSystem;
 
         [Inject]
@@ -64,7 +61,6 @@ package talk.commands
             renderer.setCanvas(layers.canvas.bitmapData);
 
             startSystem.dispatch(renderer);
-            startSystem.dispatch(piles);
             startSystem.dispatch(displayUpdate);
             startSystem.dispatch(slideSelection);
             startAllSystems.dispatch();

@@ -35,7 +35,6 @@ package alecmce.console.view
         private function onAddedToStage():void
         {
             addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-            resize(new Rectangle(0, 0, stage.stageWidth, stage.stageHeight));
         }
 
         private function onRemovedFromStage():void

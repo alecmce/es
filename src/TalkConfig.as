@@ -15,15 +15,18 @@ package
     import talk.commands.CollapseVisibleEntitiesCommand;
     import talk.commands.GotoSlideCommand;
     import talk.commands.MakeSlideEntitiesCommand;
+    import talk.commands.RiseVisibleEntitiesCommand;
     import talk.commands.SetupFontsCommand;
     import talk.commands.StartupCommand;
     import talk.factories.SlideCharacterEntityFactory;
     import talk.signals.CollapseVisible;
     import talk.signals.GotoSlide;
     import talk.signals.MakeSlideEntities;
+    import talk.signals.RiseVisible;
     import talk.signals.SetupFonts;
     import talk.signals.Startup;
     import talk.systems.CollapseSystem;
+    import talk.systems.RiseSystem;
     import talk.systems.SlideSelectionSystem;
 
     public class TalkConfig
@@ -49,6 +52,7 @@ package
             injector.map(DisplayUpdateSystem).asSingleton();
             injector.map(BitmapFonts).asSingleton();
 
+            injector.map(RiseSystem).asSingleton();
             injector.map(CollapseSystem).asSingleton();
             injector.map(SlideSelectionSystem).asSingleton();
 
@@ -56,6 +60,7 @@ package
             commandMap.map(SetupFonts).toCommand(SetupFontsCommand);
             commandMap.map(MakeSlideEntities).toCommand(MakeSlideEntitiesCommand);
             commandMap.map(CollapseVisible).toCommand(CollapseVisibleEntitiesCommand);
+            commandMap.map(RiseVisible).toCommand(RiseVisibleEntitiesCommand);
             commandMap.map(GotoSlide).toCommand(GotoSlideCommand);
 
             layers.console.addChild(new ConsoleView());
@@ -63,8 +68,17 @@ package
             var camera:Camera = new Camera(0, 0, 800, 600);
             injector.map(Camera).toValue(camera);
 
+            makeRiseAction();
             makeCollapseAction();
             makeGotoSlideAction();
+        }
+
+        private function makeRiseAction():void
+        {
+            var action:ConsoleAction = new ConsoleAction();
+            action.name = "rise";
+            action.description = "move entities to their character positions";
+            registerConsole.dispatch(action, injector.getInstance(RiseVisible));
         }
 
         private function makeCollapseAction():void

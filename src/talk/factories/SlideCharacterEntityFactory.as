@@ -8,6 +8,8 @@ package talk.factories
     import flash.display.BitmapData;
     import flash.errors.IllegalOperationError;
 
+    import talk.data.Character;
+
     import talk.data.Slide;
     import talk.data.SlideText;
 
@@ -121,11 +123,21 @@ package talk.factories
         private function makeEntity(vo:CharacterVO):void
         {
             var renderable:BitmapData = vo.data;
-            var position:Position = new Position(x + slide.x, y + slide.y);
+
+            var position:Position = new Position();
+            position.x = x + slide.x;
+            position.y = y + slide.y;
+
+            var character:Character = new Character();
+            character.x = position.x;
+            character.y = position.y;
+            character.character = vo.character;
+            character.data = renderable;
 
             var entity:Entity = new Entity();
-            entity.add(position);
             entity.add(renderable);
+            entity.add(position);
+            entity.add(character);
             entity.add(slide);
             entity.add(slideText);
 

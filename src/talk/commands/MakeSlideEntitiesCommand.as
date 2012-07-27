@@ -53,6 +53,7 @@ package talk.commands
             var sprite:Sprite = new Sprite();
             sprite.x = slide.x;
             sprite.y = slide.y;
+
             slide.border.drawRectangle(sprite.graphics, rectangle);
 
             var display:Display = new Display();

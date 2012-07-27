@@ -1,7 +1,6 @@
 package talk.systems
 {
     import Box2D.Common.Math.b2Mat22;
-    import Box2D.Common.Math.b2Transform;
     import Box2D.Common.Math.b2Vec2;
     import Box2D.Dynamics.b2Body;
     import Box2D.Dynamics.b2DebugDraw;
@@ -19,6 +18,7 @@ package talk.systems
     import flash.geom.Rectangle;
 
     import talk.data.Collapsing;
+    import talk.data.Slide;
     import talk.physics.Box2dObjectFactory;
 
     public class CollapseSystem implements System
@@ -50,7 +50,7 @@ package talk.systems
         [PostConstruct]
         public function setup():void
         {
-            collection = entities.getCollection(new <Class>[Collapsing, Position, BitmapData]);
+            collection = entities.getCollection(new <Class>[Collapsing, Slide, Position, BitmapData]);
             factory = new Box2dObjectFactory();
             matrix = new Vector.<Number>(4, true);
         }
@@ -80,6 +80,7 @@ package talk.systems
             {
                 var entity:Entity = node.entity;
                 var body:b2Body = entity.get(b2Body);
+                var slide:Slide = entity.get(Slide);
 
                 var bodyPos:b2Vec2 = body.GetPosition();
                 var x:Number = bodyPos.x;
@@ -102,8 +103,8 @@ package talk.systems
 
                 var pos:Position = entity.get(Position);
                 pos.rotation.setMatrix(matrix);
-                pos.x = (x - a * w + b * h) * TO_SCREEN;
-                pos.y = (y + c * w - d * h) * TO_SCREEN;
+                pos.x = (x - a * w + b * h) * TO_SCREEN + slide.x;
+                pos.y = (y + c * w - d * h) * TO_SCREEN + slide.y;
             }
         }
 
@@ -158,10 +159,11 @@ package talk.systems
         {
             var bitmap:BitmapData = entity.get(BitmapData);
             var pos:Position = entity.get(Position);
+            var slide:Slide = entity.get(Slide);
 
             var rect:Rectangle = new Rectangle();
-            rect.x = pos.x * TO_SIMULATION;
-            rect.y = pos.y * TO_SIMULATION;
+            rect.x = (pos.x - slide.x) * TO_SIMULATION;
+            rect.y = (pos.y - slide.y) * TO_SIMULATION;
             rect.width = bitmap.width * TO_SIMULATION * WIDTH_SCALAR;
             rect.height = bitmap.height * TO_SIMULATION * HEIGHT_SCALAR;
 
