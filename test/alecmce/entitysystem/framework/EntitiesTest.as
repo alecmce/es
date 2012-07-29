@@ -1,6 +1,6 @@
 package alecmce.entitysystem.framework
 {
-    import org.flexunit.assertThat;
+    import org.hamcrest.assertThat;
     import org.hamcrest.core.isA;
     import org.hamcrest.object.isFalse;
     import org.hamcrest.object.isNull;
@@ -65,6 +65,88 @@ package alecmce.entitysystem.framework
             alternate.add(new MockComponent());
             entities.addEntity(alternate);
             assertThat(collection.has(alternate), isTrue());
+        }
+
+        [Test]
+        public function partialSatisfactionEntityIsntAddedToCollection():void
+        {
+            var collection:Collection = entities.getCollection(new <Class>[MockComponent, MockAltComponent]);
+
+            var entity:Entity = new Entity();
+            entities.addEntity(entity);
+            entity.add(new MockComponent());
+
+            assertThat(collection.has(entity), isFalse());
+        }
+
+        [Test]
+        public function multipleComponentsEntityIsAddedToCollection():void
+        {
+            var collection:Collection = entities.getCollection(new <Class>[MockComponent, MockAltComponent]);
+
+            var entity:Entity = new Entity();
+            entities.addEntity(entity);
+            entity.add(new MockComponent());
+            entity.add(new MockAltComponent());
+
+            assertThat(collection.has(entity), isTrue());
+        }
+
+        [Test]
+        public function removingNecessaryComponentRemovesEntityFromCollection():void
+        {
+            var collection:Collection = entities.getCollection(new <Class>[MockComponent, MockAltComponent]);
+
+            var entity:Entity = new Entity();
+            entities.addEntity(entity);
+            entity.add(new MockComponent());
+            entity.add(new MockAltComponent());
+
+            entity.remove(MockComponent);
+            assertThat(collection.has(entity), isFalse());
+        }
+
+        [Test]
+        public function partialSatisfactionEntityIsntAddedToCollectionWhenAdded():void
+        {
+            var collection:Collection = entities.getCollection(new <Class>[MockComponent, MockAltComponent]);
+
+            var entity:Entity = new Entity();
+            entity.add(new MockComponent());
+            entities.addEntity(entity);
+
+            assertThat(collection.has(entity), isFalse());
+        }
+
+        [Test]
+        public function multipleComponentsEntityIsAddedToCollectionWhenAdded():void
+        {
+            var collection:Collection = entities.getCollection(new <Class>[MockComponent, MockAltComponent]);
+
+            var entity:Entity = new Entity();
+            entity.add(new MockComponent());
+            entity.add(new MockAltComponent());
+            entities.addEntity(entity);
+
+            assertThat(collection.has(entity), isTrue());
+        }
+
+        [Test]
+        public function removingEntityInAddedLoopIsHandledCorrectly():void
+        {
+            var collection:Collection = entities.getCollection(new <Class>[MockComponent]);
+            var entity:Entity = new Entity();
+            entities.addEntity(entity);
+
+            function onEntityAdded(entity:Entity):void
+            {
+                entity.remove(MockComponent);
+            }
+
+            collection.entityAdded.addOnce(onEntityAdded);
+            entity.add(new MockComponent());
+
+            assertThat(collection.has(entity), isFalse());
         }
     }
 }

@@ -17,16 +17,17 @@ package alecmce.entitysystem.extensions.view.display
         [Inject]
         public var entities:Entities;
 
+        [Inject]
+        public var camera:Camera;
+
         private var container:DisplayObjectContainer;
-        private var cameras:Collection;
-        private var displays:Collection;
+        private var collection:Collection;
         private var node:Node;
 
         [PostConstruct]
         public function setup():void
         {
-            displays = entities.getCollection(new <Class>[Display]);
-            cameras = entities.getCollection(new <Class>[Position, Camera]);
+            collection = entities.getCollection(new <Class>[Display]);
         }
 
         public function setContainer(container:DisplayObjectContainer):void
@@ -36,36 +37,30 @@ package alecmce.entitysystem.extensions.view.display
 
         public function start(time:int):void
         {
-            for (node = displays.head; node; node = node.next)
+            for (node = collection.head; node; node = node.next)
                 onEntityAdded(node.entity);
 
-            displays.entityAdded.add(onEntityAdded);
-            displays.entityRemoved.add(onEntityRemoved);
+            collection.entityAdded.add(onEntityAdded);
+            collection.entityRemoved.add(onEntityRemoved);
         }
 
         public function update(time:int, delta:int):void
         {
-            var entity:Entity = cameras.head ? cameras.head.entity : null;
-            if (!entity)
-                return;
-
-            var center:Position = entity.get(Position);
-
-            for (node = displays.head; node; node = node.next)
+            for (node = collection.head; node; node = node.next)
             {
                 var entity:Entity = node.entity;
                 var sprite:DisplayObject = entity.get(Display).object;
                 var position:Position = entity.get(Position);
 
-                sprite.x = position.x - center.x;
-                sprite.y = position.y - center.y;
                 sprite.transform.matrix = position.getTransform();
+                sprite.x = position.x - camera.left;
+                sprite.y = position.y - camera.top;
             }
         }
 
         public function stop(time:int):void
         {
-            for (node = displays.head; node; node = node.next)
+            for (node = collection.head; node; node = node.next)
                 onEntityRemoved(node.entity);
         }
 

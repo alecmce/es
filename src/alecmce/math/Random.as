@@ -19,12 +19,12 @@ package alecmce.math
             _current = _seed;
         }
 
-        public function nextInt(range:int = 0):int
+        public function rndInt(range:int = 0):int
         {
             return range == 0 ? next() : next() % range;
         }
 
-        public function nextFloat(range:Number = 1.0):Number
+        public function rndFloat(range:Number = 1.0):Number
         {
             return range * (next() / MOD);
         }
@@ -36,7 +36,7 @@ package alecmce.math
 
         public function from(unsorted:Array):*
         {
-            return unsorted[nextInt(unsorted.length)];
+            return unsorted[rndInt(unsorted.length)];
         }
 
         public function list(unsorted:Array):Array
@@ -53,9 +53,9 @@ package alecmce.math
 
         public function color():uint
         {
-            var r = nextInt(0xFF) << 16;
-            var g = nextInt(0xFF) << 8;
-            var b = nextInt(0xFF);
+            var r = rndInt(0xFF) << 16;
+            var g = rndInt(0xFF) << 8;
+            var b = rndInt(0xFF);
 
             return 0xFF000000 | r | g | b;
         }
@@ -82,7 +82,7 @@ package alecmce.math
             var x:uint = array.length - 1;
             for (var i:int = 0; i < x; i++)
             {
-                var index:int = nextInt(x--);
+                var index:int = rndInt(x--);
                 var value:* = array[index];
                 array[index] = array[x];
                 array[x] = value;

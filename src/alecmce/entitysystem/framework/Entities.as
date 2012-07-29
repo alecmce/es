@@ -3,13 +3,16 @@ package alecmce.entitysystem.framework
     final public class Entities
     {
         private var entities:EntityList;
+        private var reference:TypeIDReference;
         private var collections:Collections;
         private var entityMap:EntityMap;
 
         public function Entities()
         {
             entities = new EntityList();
+            reference = new TypeIDReference();
             collections = new Collections();
+            collections.setReference(reference);
             entityMap = new EntityMap();
         }
 
@@ -39,12 +42,13 @@ package alecmce.entitysystem.framework
 
         public function getCollection(requirements:Vector.<Class>):Collection
         {
-            return collections.getCollection(requirements) || makeCollection(requirements);
+            var id:String = reference.getCollectionID(requirements);
+            return collections.getCollection(id) || makeCollection(id, requirements);
         }
 
-        private function makeCollection(requirements:Vector.<Class>):Collection
+        private function makeCollection(id:String, requirements:Vector.<Class>):Collection
         {
-            var collection:Collection = collections.makeCollection(requirements);
+            var collection:Collection = collections.makeCollection(id, requirements);
             populateCollection(requirements, collection);
             return collection;
         }

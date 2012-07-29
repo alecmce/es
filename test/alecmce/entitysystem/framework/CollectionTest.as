@@ -32,5 +32,6 @@ package alecmce.entitysystem.framework
             collection.remove(entity);
             assertThat(collection.has(entity), isFalse());
         }
+
     }
 }

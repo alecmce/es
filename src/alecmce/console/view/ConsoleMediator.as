@@ -20,6 +20,7 @@ package alecmce.console.view
         {
             remove.add(onRemoveConsole);
             view.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+            view.visible = false;
         }
 
         override public function destroy():void

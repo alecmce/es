@@ -1,18 +1,19 @@
 package talk.commands
 {
-    import alecmce.entitysystem.extensions.view.display.DisplayUpdateSystem;
-    import alecmce.entitysystem.extensions.view.renderer.Renderer;
     import alecmce.entitysystem.extensions.robotlegs.signals.StartAllSystems;
     import alecmce.entitysystem.extensions.robotlegs.signals.StartSystem;
-
-    import flash.display.BitmapData;
-    import flash.display.DisplayObjectContainer;
+    import alecmce.entitysystem.extensions.view.display.DisplayUpdateSystem;
+    import alecmce.entitysystem.extensions.view.renderer.Renderer;
 
     import talk.data.Slides;
     import talk.signals.MakeCamera;
     import talk.signals.MakeSlideEntities;
     import talk.signals.SetupFonts;
-    import talk.systems.CollapseSystem;
+    import talk.systems.AnimationSystem;
+    import talk.systems.BulletSystem;
+    import talk.systems.FiringSystem;
+    import talk.systems.HitSystem;
+    import talk.systems.KeyMovementSystem;
     import talk.systems.SlideSelectionSystem;
 
     public class StartupCommand
@@ -39,6 +40,9 @@ package talk.commands
         public var slideSelection:SlideSelectionSystem;
 
         [Inject]
+        public var keyControl:KeyMovementSystem;
+
+        [Inject]
         public var makeCamera:MakeCamera;
 
         [Inject]
@@ -49,6 +53,18 @@ package talk.commands
 
         [Inject]
         public var displayUpdate:DisplayUpdateSystem;
+
+        [Inject]
+        public var firing:FiringSystem;
+
+        [Inject]
+        public var bullet:BulletSystem;
+
+        [Inject]
+        public var hits:HitSystem;
+
+        [Inject]
+        public var animations:AnimationSystem;
 
         public function execute():void
         {
@@ -62,6 +78,11 @@ package talk.commands
 
             startSystem.dispatch(renderer);
             startSystem.dispatch(displayUpdate);
+            startSystem.dispatch(keyControl);
+            startSystem.dispatch(firing);
+            startSystem.dispatch(bullet);
+            startSystem.dispatch(hits);
+            startSystem.dispatch(animations);
             startAllSystems.dispatch();
         }
     }

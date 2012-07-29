@@ -5,6 +5,7 @@ package alecmce.entitysystem.framework
     final internal class Collections
     {
         private var reference:TypeIDReference;
+
         private var collections:Dictionary;
         private var addHandlers:EntityHandlerList;
         private var removeHandlers:EntityHandlerList;
@@ -12,8 +13,12 @@ package alecmce.entitysystem.framework
 
         public function Collections()
         {
-            reference = new TypeIDReference();
             collections = new Dictionary(true);
+        }
+
+        public function setReference(reference:TypeIDReference):void
+        {
+            this.reference = reference;
 
             addHandlers = new EntityHandlerList();
             addHandlers.reference = reference;
@@ -41,19 +46,27 @@ package alecmce.entitysystem.framework
 
         public function unregisterEntity(entity:Entity):void
         {
+            removeFromCollectionsForEachComponent(entity);
             entity.componentAdded.remove(addToCollections);
             entity.componentRemoved.remove(removeFromCollections);
         }
 
-        public function getCollection(requirements:Vector.<Class>):Collection
+        private function removeFromCollectionsForEachComponent(entity):void
         {
-            return collections[reference.getCollectionID(requirements)];
+            for each (var klass:Class in entity.getComponents())
+                removeFromCollections(entity, klass);
         }
 
-        public function makeCollection(requirements:Vector.<Class>):Collection
+        public function getCollection(id:String):Collection
+        {
+            return collections[id];
+        }
+
+        public function makeCollection(id:String, requirements:Vector.<Class>):Collection
         {
             var collection:Collection = new Collection();
             makeCollectionGateway(requirements, collection);
+            collections[id] = collection;
             return collection;
         }
 

@@ -77,10 +77,11 @@ package
             second.text = "This is a second bullet point";
 
             var slide:Slide = new Slide();
-            slide.x = 5;
-            slide.y = 5;
-            slide.width = 790;
-            slide.height = 590;
+            slide.x = 0;
+            slide.y = 0;
+            slide.width = 800;
+            slide.height = 600;
+            slide.padding = 5;
             slide.border = new Brush();
             slide.border.width = 2;
             slide.border.rgb = 0x000000;
@@ -111,10 +112,11 @@ package
             second.text = "It's a brave new world!";
 
             var slide:Slide = new Slide();
-            slide.x = 805;
-            slide.y = 5;
-            slide.width = 790;
-            slide.height = 590;
+            slide.x = 800;
+            slide.y = 0;
+            slide.width = 800;
+            slide.height = 600;
+            slide.padding = 5;
             slide.border = new Brush();
             slide.border.width = 2;
             slide.border.rgb = 0x000000;

@@ -62,6 +62,12 @@ package alecmce.entitysystem.extensions.view.renderer
                 var pos:Position = entity.get(Position);
                 var data:BitmapData = entity.get(BitmapData);
 
+                if (!data)
+                {
+                    trace("FIXME! BitmapData-less entity found in BitmapData-required collection");
+                    continue;
+                }
+
                 if (camera.contains(pos.x, pos.y, PADDING))
                 {
                     var x:Number = pos.x - camera.left;

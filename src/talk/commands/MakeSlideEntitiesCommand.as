@@ -9,6 +9,8 @@ package talk.commands
     import flash.display.Sprite;
     import flash.geom.Rectangle;
 
+    import org.hamcrest.text.re;
+
     import talk.data.Slide;
     import talk.factories.SlideCharacterEntityFactory;
 
@@ -47,8 +49,10 @@ package talk.commands
             position.y = slide.y;
 
             var rectangle:Rectangle = new Rectangle();
-            rectangle.width = slide.width;
-            rectangle.height = slide.height;
+            rectangle.x = slide.padding;
+            rectangle.y = slide.padding;
+            rectangle.width = slide.width - slide.padding * 2;
+            rectangle.height = slide.height - slide.padding * 2;
 
             var sprite:Sprite = new Sprite();
             sprite.x = slide.x;

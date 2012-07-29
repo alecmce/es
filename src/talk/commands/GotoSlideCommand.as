@@ -32,7 +32,7 @@ package talk.commands
         public function execute():void
         {
             i = int(index);
-            if (i < 0 || slides.list.length < i)
+            if (i < 0 || i >= slides.list.length)
                 return;
 
             removePreviouslySelected();
@@ -40,17 +40,17 @@ package talk.commands
             addSelectionSystem();
         }
 
-        private function addNewSelected():void
-        {
-            var slide:Slide = slides.list[i];
-            slide.entity.add(new Selected());
-        }
-
         private function removePreviouslySelected():void
         {
             var collection:Collection = entities.getCollection(new <Class>[Slides, Slide, Selected]);
             for (var node:Node = collection.head; node; node = node.next)
                 node.entity.remove(Selected);
+        }
+
+        private function addNewSelected():void
+        {
+            var slide:Slide = slides.list[i];
+            slide.entity.add(new Selected());
         }
 
         private function addSelectionSystem():void

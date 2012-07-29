@@ -24,8 +24,10 @@ package alecmce.entitysystem.framework
 
         override public function remove(entity:Entity):Entity
         {
-            super.remove(entity);
-            entityRemoved.dispatch(entity);
+            entity = super.remove(entity);
+            if (entity)
+                entityRemoved.dispatch(entity);
+
             return entity;
         }
     }

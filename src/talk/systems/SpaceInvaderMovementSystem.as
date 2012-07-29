@@ -15,9 +15,11 @@ package talk.systems
 
     public class SpaceInvaderMovementSystem implements System
     {
-        private const INITIAL_STEP_INTERVAL:int = 400;
+        private const INITIAL_STEP_INTERVAL:int = 1000;
         private const STEPS_BEFORE_CHANGING_INTERVAL:int = 10;
-        private const DELTA_INTERVAL:int = -20;
+        private const DELTA_INTERVAL:int = -25;
+        private const PADDING_X:int = 25;
+        private const PADDING_Y:int = 10;
 
         private const SPACING:int = 50;
 
@@ -49,10 +51,10 @@ package talk.systems
         public function start(time:int):void
         {
             this.stepInterval = INITIAL_STEP_INTERVAL;
-            this.lastStepped = time;
+            this.lastStepped = 0;
             this.isMovingRight = 1;
 
-            columns = int(layers.getSize().width / SPACING);
+            columns = int((layers.getSize().width - 10) / SPACING);
 
             grid = new SpaceInvaders();
             for (node = collection.head; node; node = node.next)
@@ -106,7 +108,7 @@ package talk.systems
 
         private function handleMoveRight():void
         {
-            if (++x + grid.getSize().right > columns)
+            if (++x + grid.getSize().right >= columns)
             {
                 ++y;
                 --x;
@@ -118,7 +120,7 @@ package talk.systems
         {
             if (--x + grid.getSize().left < 0)
             {
-                --x;
+                ++x;
                 ++y;
                 isMovingRight = true;
             }
@@ -142,8 +144,8 @@ package talk.systems
                 var invader:SpaceInvader = entity.get(SpaceInvader);
                 var position:Position = entity.get(Position);
 
-                position.x = slide.x + (x + invader.x) * SPACING;
-                position.y = slide.y + (y + invader.y) * SPACING;
+                position.x = PADDING_X + slide.x + (x + invader.x) * SPACING;
+                position.y = PADDING_Y + slide.y + (y + invader.y) * SPACING;
             }
         }
     }

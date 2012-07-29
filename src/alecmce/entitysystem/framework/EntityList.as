@@ -17,7 +17,11 @@ package alecmce.entitysystem.framework
 
         public function add(entity:Entity):Entity
         {
-            addNode(new Node(entity));
+            if (map[entity] == null)
+            {
+                addNode(new Node(entity));
+            }
+
             return entity;
         }
 

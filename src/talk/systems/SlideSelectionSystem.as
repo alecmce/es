@@ -7,12 +7,9 @@ package talk.systems
     import alecmce.entitysystem.framework.System;
     import alecmce.entitysystem.framework.Systems;
     import alecmce.math.easing.Expo;
-    import alecmce.math.easing.Quad;
 
     import talk.data.Selected;
-
     import talk.data.Slide;
-    import talk.data.Slides;
     import talk.data.Slides;
 
     public class SlideSelectionSystem implements System

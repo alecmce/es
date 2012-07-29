@@ -14,7 +14,7 @@ package talk.data
 
         public var title:SlideText;
         public var points:Vector.<SlideText>;
-        public var index:int;
         public var border:Brush;
+        public var padding:int;
     }
 }

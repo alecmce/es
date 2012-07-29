@@ -41,8 +41,11 @@ package alecmce.entitysystem.framework
         public function add(component:Object):void
         {
             var klass:Class = component["constructor"];
+            var isNew:Boolean = components[klass] == null;
             components[klass] = component;
-            componentAdded.dispatch(this, component);
+
+            if (isNew)
+                componentAdded.dispatch(this, component);
         }
 
         public function remove(klass:Class):void

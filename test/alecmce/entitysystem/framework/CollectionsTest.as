@@ -18,17 +18,9 @@ package alecmce.entitysystem.framework
         [Test]
         public function passingSameRequirementsGivesBackSameCollection():void
         {
-            var requirements:Vector.<Class> = new <Class>[];
-            var collection:Collection = collections.getCollection(requirements);
-            assertThat(collections.getCollection(requirements), sameInstance(collection));
-        }
-
-        [Test]
-        public function stillSameCollectionIfRequirementsIsDifferentInstance():void
-        {
-            var a:Collection = collections.getCollection(new <Class>[]);
-            var b:Collection = collections.getCollection(new <Class>[]);
-            assertThat(a, b);
+            var id:String = "blah";
+            var collection:Collection = collections.getCollection(id);
+            assertThat(collections.getCollection(id), sameInstance(collection));
         }
     }
 }
