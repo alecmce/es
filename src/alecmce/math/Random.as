@@ -53,9 +53,9 @@ package alecmce.math
 
         public function color():uint
         {
-            var r = rndInt(0xFF) << 16;
-            var g = rndInt(0xFF) << 8;
-            var b = rndInt(0xFF);
+            var r:int = rndInt(0xFF) << 16;
+            var g:int = rndInt(0xFF) << 8;
+            var b:int = rndInt(0xFF);
 
             return 0xFF000000 | r | g | b;
         }

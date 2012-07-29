@@ -8,7 +8,7 @@ package talk.signals
     {
         public function MakeSlideEntities()
         {
-            super(Slide);
+            super();
         }
     }
 }

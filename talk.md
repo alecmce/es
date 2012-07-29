@@ -1,12 +1,10 @@
-Introduction
-============
+# Introduction
 
-Hello. My name is Alec McEachran. I'm an interactive software developer / game developer. I've worked in Silicon Valley for about three years now, for Slide, Gaia, Play Studios and just recently for Kabam. Right now in my day job I'm working on a great game called Realm of the Mad God. You should check it out, it's awesome. But it wasn't written by me, and it isn't written with an Entity System on the front-end, so check it out some other time.
+Hello. My name is Alec McEachran. I'm an game and interactive software developer. I've worked in Silicon Valley for a few years now, for Slide, Gaia, Play Studios and just recently for Kabam. Right now in my day job I'm working on a great game called Realm of the Mad God. You should check it out, it's awesome. But it wasn't written by me, and it isn't written with an Entity System on the front-end, so check it out some other time.
 
 I want to talk to you today about Entity Systems. Some of you may know a lot about them, others little-to-nothing. That's ok; I'm going to keep this relatively high-level, talk about the ideas behind Entity Systems, what they do and why they're clever.
 
-Coding is About Structure
-===================================================
+# Coding is About Structure
 
 Obviously. The structures that we create model some aspect of the world that we want to automate, visualize, persist, subvert... the list 
 

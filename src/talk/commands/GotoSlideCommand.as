@@ -25,16 +25,10 @@ package talk.commands
         public var selection:SlideSelectionSystem;
 
         [Inject]
-        public var index:String;
-
-        private var i:int;
+        public var name:String;
 
         public function execute():void
         {
-            i = int(index);
-            if (i < 0 || i >= slides.list.length)
-                return;
-
             removePreviouslySelected();
             addNewSelected();
             addSelectionSystem();
@@ -49,8 +43,12 @@ package talk.commands
 
         private function addNewSelected():void
         {
-            var slide:Slide = slides.list[i];
-            slide.entity.add(new Selected());
+            var slide:Slide = slides.current.getTarget(name);
+            if (slide)
+            {
+                slides.current = slide;
+                slide.entity.add(new Selected());
+            }
         }
 
         private function addSelectionSystem():void

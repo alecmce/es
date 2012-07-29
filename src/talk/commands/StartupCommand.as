@@ -70,8 +70,7 @@ package talk.commands
         {
             setupFonts.dispatch();
             makeCamera.dispatch();
-            makeSlideEntities.dispatch(slides.list[0]);
-            makeSlideEntities.dispatch(slides.list[1]);
+            makeSlideEntities.dispatch();
 
             displayUpdater.setContainer(layers.main);
             renderer.setCanvas(layers.canvas.bitmapData);

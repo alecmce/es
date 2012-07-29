@@ -70,7 +70,7 @@ package talk.factories
                 {
                     vo.data = font.getCharacter(character);
                     if (vo.data == null)
-                        throw new IllegalOperationError("You cannot render bitmap text including characters not present in the bitmap font");
+                        trace("Unable to render '" + character + "' with this font.");
                 }
                 else
                 {
@@ -123,6 +123,8 @@ package talk.factories
         private function makeEntity(vo:CharacterVO):void
         {
             var renderable:BitmapData = vo.data;
+            if (renderable == null)
+                return;
 
             var position:Position = new Position();
             position.x = x + slide.x;

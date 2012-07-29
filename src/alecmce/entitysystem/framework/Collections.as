@@ -51,7 +51,7 @@ package alecmce.entitysystem.framework
             entity.componentRemoved.remove(removeFromCollections);
         }
 
-        private function removeFromCollectionsForEachComponent(entity):void
+        private function removeFromCollectionsForEachComponent(entity:Entity):void
         {
             for each (var klass:Class in entity.getComponents())
                 removeFromCollections(entity, klass);

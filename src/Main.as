@@ -49,7 +49,7 @@ package
                     .extend(ResizeExtension)
                     .configure(EntitiesConfig)
                     .configure(TalkConfig, this)
-                    .configure(TempConfig, this);
+                    .configure(SlideConfig, this);
 
             context.injector.getInstance(Startup).dispatch();
         }
