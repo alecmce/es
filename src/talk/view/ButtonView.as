@@ -9,7 +9,7 @@ package talk.view
 
     public class ButtonView extends Sprite
     {
-        public static const WIDTH:int = 100;
+        public static const WIDTH:int = 120;
         public static const HEIGHT:int = 30;
         private const FONT_SIZE:int = 20;
         public static const PADDING_X:int = 40;
@@ -17,8 +17,10 @@ package talk.view
         public static const DELTA:int = 2;
 
         private var container:Sprite;
+        private var number:TextField;
         private var field:TextField;
         private var selected:Boolean;
+        private var shape:Shape;
 
         public function ButtonView()
         {
@@ -27,29 +29,55 @@ package talk.view
             addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
         }
 
-        public function setName(name:String, color:int = 0xFFFF66):void
+        public function setName(index:int, name:String, color:int = 0xFFFF66):void
+        {
+            makeNumber(index);
+            makeName(name);
+            makeShape(color);
+
+            container.addChild(shape);
+            container.addChild(number);
+            container.addChild(field);
+            addChild(container);
+        }
+
+        private function makeNumber(index:int):void
+        {
+            var format:TextFormat = new TextFormat();
+            format.font = "Helvetica";
+            format.size = FONT_SIZE * 0.75;
+
+            number = new TextField();
+            number.defaultTextFormat = format;
+            number.selectable = false;
+            number.width = 15;
+            number.height = HEIGHT;
+            number.text = index.toString();
+        }
+
+        private function makeName(name:String):void
         {
             var format:TextFormat = new TextFormat();
             format.font = "Helvetica";
             format.size = FONT_SIZE;
 
             field = new TextField();
+            field.x = 15;
             field.y = 2;
             field.defaultTextFormat = format;
             field.selectable = false;
             field.width = WIDTH;
             field.height = HEIGHT;
             field.text = name;
+        }
 
-            var shape:Shape = new Shape();
+        private function makeShape(color:int):void
+        {
+            shape = new Shape();
             shape.graphics.lineStyle(0, 0x000000);
             shape.graphics.beginFill(color, 0.5);
             shape.graphics.drawRect(0, 0, field.width + PADDING_X, HEIGHT);
             shape.graphics.endFill();
-
-            container.addChild(shape);
-            container.addChild(field);
-            addChild(container);
         }
 
         public function getName():String

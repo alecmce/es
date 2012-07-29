@@ -5,8 +5,11 @@ package talk.view
     import avmplus.implementsXml;
 
     import flash.display.Sprite;
+    import flash.events.Event;
+    import flash.events.KeyboardEvent;
     import flash.events.MouseEvent;
     import flash.geom.Rectangle;
+    import flash.ui.Keyboard;
 
     import org.osflash.signals.Signal;
 
@@ -16,6 +19,7 @@ package talk.view
     {
         private var list:Vector.<ButtonView>;
         private var rectangle:Rectangle;
+        private var targets:Vector.<SlideTarget>;
 
         public var selected:Signal;
 
@@ -24,6 +28,23 @@ package talk.view
             list = new <ButtonView>[];
 
             selected = new Signal(String);
+
+            addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+        }
+
+        private function onAddedToStage(event:Event):void
+        {
+            stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+        }
+
+        private function onKeyDown(event:KeyboardEvent):void
+        {
+            if (event.keyCode >= Keyboard.NUMBER_1 && event.keyCode <= Keyboard.NUMBER_9)
+            {
+                var key:int = event.keyCode - Keyboard.NUMBER_1;
+                if (key < targets.length)
+                    selected.dispatch(targets[key].name);
+            }
         }
 
         public function resize(rectangle:Rectangle):void
@@ -34,17 +55,19 @@ package talk.view
 
         public function setTargets(targets:Vector.<SlideTarget>):void
         {
+            this.targets = targets;
+            var index:int = 1;
             for each (var target:SlideTarget in targets)
-                addName(target);
+                addName(index++, target);
 
             updatePositions();
         }
 
-        public function addName(target:SlideTarget):void
+        public function addName(index:int, target:SlideTarget):void
         {
             var button:ButtonView = new ButtonView();
             button.addEventListener(MouseEvent.CLICK, onClick);
-            button.setName(target.name, target.color);
+            button.setName(index, target.name, target.color);
             addChild(button);
             list.push(button);
         }
