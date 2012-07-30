@@ -64,17 +64,39 @@ package
 
         private function makeSlides():void
         {
-            var title:Slide = makeFirstSlide();
+            var intro:Slide = makeIntroSlide();
             var rotmg:Slide = makeRealmSlide();
-            var second:Slide = makeSecondSlide();
+            var structure:Slide = makeStructureSlide();
+            var invaders:Slide = makeInvadersSlide();
+            var robotlegs:Slide = makeRobotlegsSlide();
+            var games:Slide = makeGamesSlide();
+            var rethink:Slide = makeRethinkingStructureSlide();
+            var entities:Slide = makeEntitySystemsSlide();
 
-            title.addTarget("rotmg", rotmg);
-            title.addTarget("second", second);
+            intro.addTarget("rotmg", rotmg, 0x0099FF);
+            intro.addTarget("structure", structure);
 
-            rotmg.addTarget("title", title);
+            rotmg.addTarget("intro", intro);
+
+            structure.addTarget("intro", intro, 0xFF6666);
+            structure.addTarget("invaders", invaders);
+
+            invaders.addTarget("structure", structure, 0xFF6666);
+            invaders.addTarget("robotlegs", robotlegs);
+
+            robotlegs.addTarget("invaders", invaders, 0xFF6666);
+            robotlegs.addTarget("games", games);
+
+            games.addTarget("robotlegs", robotlegs, 0xFF6666);
+            games.addTarget("rethink", rethink);
+
+            rethink.addTarget("games", games, 0xFF6666);
+            rethink.addTarget("entities", entities);
+
+            entities.addTarget("rethink", rethink,  0xFF6666);
 
             slides = new Slides();
-            slides.current = title;
+            slides.current = intro;
             injector.map(Slides).toValue(slides);
         }
 
@@ -103,7 +125,7 @@ package
             }
         }
 
-        private function makeFirstSlide():Slide
+        private function makeIntroSlide():Slide
         {
             var slide:Slide = makeSlide(0, 0);
             slide.setTitle(20, 20, "Entity Systems");
@@ -120,12 +142,48 @@ package
             return slide;
         }
 
-        private function makeSecondSlide():Slide
+        private function makeStructureSlide():Slide
         {
             var slide:Slide = makeSlide(1, 0);
-            slide.setTitle(20, 20, "Second Slide");
-            slide.addPoint(20, 200, "This is the first point of a new slide");
-            slide.addPoint(20, 280, "It's a brave new world!");
+            slide.setTitle(20, 20, "Seeking Structure");
+            slide.addPoint(20, 200, "Everyone models reality");
+            slide.addPoint(20, 280, "Developers write it down");
+            return slide;
+        }
+
+        private function makeInvadersSlide():Slide
+        {
+            var slide:Slide = makeSlide(2, 0);
+            slide.setTitle(20, 20, "Space Invaders");
+            return slide;
+        }
+
+        private function makeRobotlegsSlide():Slide
+        {
+            var slide:Slide = makeSlide(3, 0);
+            slide.setTitle(20, 20, "RobotLegs");
+            return slide;
+        }
+
+        private function makeGamesSlide():Slide
+        {
+            var slide:Slide = makeSlide(3, 1);
+            slide.setTitle(20, 20, "RobotLegs and Games");
+            slide.addPoint(20, 200, "From RIAs to games")
+            return slide;
+        }
+
+        private function makeRethinkingStructureSlide():Slide
+        {
+            var slide:Slide = makeSlide(4, 0);
+            slide.setTitle(20, 20, "Rethinking Structure");
+            return slide;
+        }
+
+        private function makeEntitySystemsSlide():Slide
+        {
+            var slide:Slide = makeSlide(5, 0);
+            slide.setTitle(20, 20, "Entity Systems");
             return slide;
         }
 

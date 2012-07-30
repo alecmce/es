@@ -20,13 +20,16 @@ package talk.data
 
         public var points:Vector.<SlideText>;
         public var images:Vector.<SlideImage>;
-        public var targets:Object;
+        public var targets:Vector.<SlideTarget>;
+
+        private var targetMap:Object;
 
         public function Slide()
         {
             points = new <SlideText>[];
             images = new <SlideImage>[];
-            targets = {};
+            targets = new <SlideTarget>[];
+            targetMap = {};
         }
 
         public function setTitle(x:int, y:int, text:String):void
@@ -45,12 +48,13 @@ package talk.data
             target.slide = slide;
             target.color = color;
 
-            targets[name] = target;
+            targets.push(target);
+            targetMap[name] = target;
         }
 
         public function getTarget(name:String):Slide
         {
-            var target:SlideTarget = targets[name];
+            var target:SlideTarget = targetMap[name];
             return target ? target.slide : null;
         }
 

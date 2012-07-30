@@ -41,11 +41,7 @@ package talk.view
 
         private function updateTargets():void
         {
-            var targets:Vector.<SlideTarget> = new <SlideTarget>[];
-            for each (var target:SlideTarget in slides.current.targets)
-                targets.push(target);
-
-            view.setTargets(targets);
+            view.setTargets(slides.current.targets);
         }
     }
 }

@@ -1,17 +1,49 @@
-# Introduction
+# Introduction (0 - 5 mins)
 
-Hello. My name is Alec McEachran. I'm an game and interactive software developer. I've worked in Silicon Valley for a few years now, for Slide, Gaia, Play Studios and just recently for Kabam. Right now in my day job I'm working on a great game called Realm of the Mad God. You should check it out, it's awesome. But it wasn't written by me, and it isn't written with an Entity System on the front-end, so check it out some other time.
+    Hello. My name is Alec McEachran. I'm an game and interactive software developer. I've worked in Silicon Valley for a few years now, for Slide, Gaia, Play Studios and just recently for Kabam. Right now in my day job I'm working on a great game called Realm of the Mad God. You should check it out, it's awesome. But it wasn't written by me, and it isn't written with an Entity System on the front-end, so check it out some other time.
 
-I want to talk to you today about Entity Systems. Some of you may know a lot about them, others little-to-nothing. That's ok; I'm going to keep this relatively high-level, talk about the ideas behind Entity Systems, what they do and why they're clever.
+    I want to talk to you today about Entity Systems. Some of you may know a lot about them, others little-to-nothing. That's ok; I'm going to keep this relatively high-level, talk about the ideas behind Entity Systems, what they do and why they're useful.
 
-# Coding is About Structure
+# 
 
-Obviously. The structures that we create model some aspect of the world that we want to automate, visualize, persist, subvert... the list 
+# Seeking Structure (5 - 10 mins)
 
-Uncle Bob - Refactor 'til you drop
+    Our brains are systems that receive and aggregate extraordinary amounts of data into a sophisticated model of the world. Our brains are self-reflexive: they can and do model their own functioning and the functionality of others'. The story of how magnificently adept we are at imposing accurate structures onto the world is the story of human evolution.
 
-MVC
+    Developers 
 
+# Space Invaders (10 - 15 mins)
+
+    Imagine being asked to build space invaders from scratch. You've been programming in an object-oriented paradigm for several years; perhaps you've even studied it at university. You know exactly where to start. There are two main objects in Space Invaders: Aliens and a Spaceship.
+
+    The Aliens are arranged in a grid structure. The aliens in the grid move from left-to-right until the hit the edge of the screen, then they move down a little and change direction to move right-to-left. We can describe that using an AlienGrid. The bottom row of Aliens fire Bullets down towards the Spaceship. If the bullets collide with the Spaceship, the player loses a life.
+
+    The Spaceship moves left and right and can fire bullets according to user input. If the bullets hit the aliens then that alien is destroyed. All the aliens must be destroyed to complete the level. As the Aliens move down, if an Alien collides with the Spaceship then the player loses a life.
+
+    That's the whole game.
+    
+
+# RobotLegs (15 - 20 mins)
+
+    Frameworks / Toolkits
+    People who dislike frameworks argue that they impose a structure
+   
+    ## RobotLegs and Games
+
+# Rethinking Structure (20 - 25 mins)
+
+    Flexible structures are about design processes!
+
+Uncle Bob - Refactor 'til you drop?
+
+# Entity Systems (25 - 30 mins)
+
+    ## The Future of Entity Systems
+
+
+
+
+=====================================================================================================================================
 
 
 
