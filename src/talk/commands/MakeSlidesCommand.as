@@ -10,13 +10,13 @@ package talk.commands
     import flash.geom.Rectangle;
 
     import talk.data.Slide;
-    import talk.data.SlideImage;
     import talk.data.SlideTarget;
     import talk.data.Slides;
     import talk.data.Target;
     import talk.factories.SlideCharacterEntityFactory;
+    import talk.signals.MakeSlideStep;
 
-    public class MakeSlideEntitiesCommand
+    public class MakeSlidesCommand
     {
         [Inject]
         public var fonts:BitmapFonts;
@@ -26,6 +26,9 @@ package talk.commands
 
         [Inject]
         public var slides:Slides;
+
+        [Inject]
+        public var makeSlideStep:MakeSlideStep;
 
         [Inject]
         public var characterFactory:SlideCharacterEntityFactory;
@@ -45,8 +48,7 @@ package talk.commands
             {
                 setCurrentSlide(slide);
                 makeBorderEntity();
-                makeImageEntities();
-                addEntities();
+                makeSlideStep.dispatch(slide);
                 makeTargets();
             }
         }
@@ -55,26 +57,6 @@ package talk.commands
         {
             current = slide;
             made.push(current);
-        }
-
-        private function makeImageEntities():void
-        {
-            var images:Vector.<SlideImage> = current.images;
-            if (!images)
-                return;
-
-            for each (var image:SlideImage in current.images)
-            {
-                var position:Position = new Position();
-                position.x = image.x + current.x;
-                position.y = image.y + current.y;
-
-                var entity:Entity = new Entity();
-                entity.add(position);
-                entity.add(image.data);
-
-                entities.addEntity(entity);
-            }
         }
 
         private function makeBorderEntity():void
@@ -107,13 +89,6 @@ package talk.commands
             entity.add(current);
 
             entities.addEntity(entity);
-        }
-
-        private function addEntities():void
-        {
-            var list:Vector.<Entity> = characterFactory.make(current);
-            for each (var entity:Entity in list)
-                entities.addEntity(entity);
         }
 
         private function makeTargets():void

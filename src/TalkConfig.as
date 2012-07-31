@@ -13,32 +13,37 @@ package
 
     import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 
+    import talk.commands.MakeSlideStepCommand;
+
     import talk.commands.SetInvaderGraphicsCommand;
 
     import talk.commands.AddSpaceshipCommand;
 
     import talk.commands.CollapseSlideEntitiesCommand;
     import talk.commands.GotoSlideCommand;
-    import talk.commands.MakeSlideEntitiesCommand;
+    import talk.commands.MakeSlidesCommand;
     import talk.commands.RemoveSelectedSlideSystemsCommand;
     import talk.commands.RiseSlideEntitiesCommand;
     import talk.commands.SetLetterGraphicsCommand;
     import talk.commands.SetupFontsCommand;
     import talk.commands.InvaderSlideEntitiesCommand;
     import talk.commands.StartupCommand;
+    import talk.commands.StepSlideCommand;
     import talk.factories.AssetFactory;
     import talk.factories.SlideCharacterEntityFactory;
+    import talk.signals.MakeSlideStep;
     import talk.signals.SetInvaderGraphics;
     import talk.signals.AddSpaceship;
     import talk.signals.CollapseVisible;
     import talk.signals.GotoSlide;
-    import talk.signals.MakeSlideEntities;
+    import talk.signals.MakeSlides;
     import talk.signals.RemoveSelectedSlideSystems;
     import talk.signals.RiseVisible;
     import talk.signals.SetLetterGraphics;
     import talk.signals.SetupFonts;
     import talk.signals.SpaceInvadersVisible;
     import talk.signals.Startup;
+    import talk.signals.StepSlide;
     import talk.systems.AnimationSystem;
     import talk.systems.BulletSystem;
     import talk.systems.CollapseSystem;
@@ -85,7 +90,8 @@ package
 
             commandMap.map(Startup).toCommand(StartupCommand);
             commandMap.map(SetupFonts).toCommand(SetupFontsCommand);
-            commandMap.map(MakeSlideEntities).toCommand(MakeSlideEntitiesCommand);
+            commandMap.map(MakeSlides).toCommand(MakeSlidesCommand);
+            commandMap.map(MakeSlideStep).toCommand(MakeSlideStepCommand);
             commandMap.map(CollapseVisible).toCommand(CollapseSlideEntitiesCommand);
             commandMap.map(RiseVisible).toCommand(RiseSlideEntitiesCommand);
             commandMap.map(SpaceInvadersVisible).toCommand(InvaderSlideEntitiesCommand);
@@ -94,6 +100,7 @@ package
             commandMap.map(AddSpaceship).toCommand(AddSpaceshipCommand);
             commandMap.map(SetInvaderGraphics).toCommand(SetInvaderGraphicsCommand);
             commandMap.map(SetLetterGraphics).toCommand(SetLetterGraphicsCommand);
+            commandMap.map(StepSlide).toCommand(StepSlideCommand);
 
             layers.console.addChild(new ConsoleView());
 
@@ -107,6 +114,7 @@ package
             makeGotoSlideAction();
             makeInvaderAnimationsAction();
             makeLetterGraphicsAction();
+            makeStepAction();
         }
 
         private function makeRiseAction():void
@@ -163,6 +171,14 @@ package
             action.name = "gotoSlide";
             action.description = "goes to a given slide index";
             registerConsole.dispatch(action, injector.getInstance(GotoSlide));
+        }
+
+        private function makeStepAction():void
+        {
+            var action:ConsoleAction = new ConsoleAction();
+            action.name = "step";
+            action.description = "increments the slide step";
+            registerConsole.dispatch(action, injector.getInstance(StepSlide));
         }
     }
 }

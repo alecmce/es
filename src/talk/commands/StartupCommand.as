@@ -7,7 +7,7 @@ package talk.commands
 
     import talk.data.Slides;
     import talk.signals.MakeCamera;
-    import talk.signals.MakeSlideEntities;
+    import talk.signals.MakeSlides;
     import talk.signals.SetupFonts;
     import talk.systems.AnimationSystem;
     import talk.systems.BulletSystem;
@@ -46,7 +46,7 @@ package talk.commands
         public var makeCamera:MakeCamera;
 
         [Inject]
-        public var makeSlideEntities:MakeSlideEntities;
+        public var makeSlideEntities:MakeSlides;
 
         [Inject]
         public var slides:Slides;

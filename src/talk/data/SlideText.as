@@ -6,5 +6,6 @@ package talk.data
         public var y:int;
         public var text:String;
         public var font:String;
+        public var step:int;
     }
 }

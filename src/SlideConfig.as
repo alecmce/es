@@ -9,12 +9,8 @@ package
     import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 
     import talk.data.Selected;
-
     import talk.data.Slide;
-    import talk.data.SlideImage;
-    import talk.data.SlideText;
     import talk.data.Slides;
-    import talk.signals.GotoSlide;
     import talk.view.ButtonsMediator;
     import talk.view.ButtonsView;
 
@@ -75,7 +71,6 @@ package
 
             intro.addSlideTarget("rotmg", rotmg, 0x0099FF);
             intro.addSlideTarget("structure", structure);
-            intro.addActionTarget("invaders");
 
             rotmg.addSlideTarget("intro", intro);
 
@@ -130,8 +125,9 @@ package
         {
             var slide:Slide = makeSlide(0, 0);
             slide.setTitle(20, 20, "Entity Systems");
-            slide.addPoint(20, 200, "github.com/alecmce/es");
-            slide.addPoint(20, 280, "@alecmce");
+            slide.addPoint(20, 200, "github.com/alecmce/es", 1);
+            slide.addPoint(20, 280, "@alecmce", 2);
+            slide.addAction("step");
             return slide;
         }
 

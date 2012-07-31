@@ -7,5 +7,6 @@ package talk.data
         public var x:int;
         public var y:int;
         public var data:BitmapData;
+        public var step:int;
     }
 }

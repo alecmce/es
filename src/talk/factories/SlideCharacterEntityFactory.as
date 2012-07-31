@@ -39,17 +39,20 @@ package talk.factories
             return entities;
         }
 
-        private function makeTextEntities(slide:SlideText):void
+        private function makeTextEntities(slideText:SlideText):void
         {
-            this.slideText = slide;
+            if (slideText.step == slide.step)
+            {
+                this.slideText = slideText;
 
-            font = fonts.getFont(slide.font);
-            text = slide.text;
-            x = slide.x;
-            y = slide.y;
+                font = fonts.getFont(slideText.font);
+                text = slideText.text;
+                x = slideText.x;
+                y = slideText.y;
 
-            makeCharacterList();
-            makeEntities();
+                makeCharacterList();
+                makeEntities();
+            }
         }
 
         private function makeCharacterList():void

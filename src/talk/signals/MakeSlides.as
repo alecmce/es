@@ -4,9 +4,9 @@ package talk.signals
 
     import talk.data.Slide;
 
-    public class MakeSlideEntities extends Signal
+    public class MakeSlides extends Signal
     {
-        public function MakeSlideEntities()
+        public function MakeSlides()
         {
             super();
         }
