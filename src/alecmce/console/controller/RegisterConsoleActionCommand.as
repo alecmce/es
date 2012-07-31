@@ -1,6 +1,6 @@
 package alecmce.console.controller
 {
-    import alecmce.console.model.ConsoleModel;
+    import alecmce.console.model.Console;
     import alecmce.console.vo.ConsoleAction;
 
     import org.osflash.signals.Signal;
@@ -8,7 +8,7 @@ package alecmce.console.controller
     public class RegisterConsoleActionCommand
     {
         [Inject]
-        public var console:ConsoleModel;
+        public var console:Console;
 
         [Inject]
         public var action:ConsoleAction;

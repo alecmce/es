@@ -3,7 +3,7 @@ package alecmce.console
     import alecmce.console.controller.AddDefaultConsoleActionsCommand;
     import alecmce.console.controller.ListActionsCommand;
     import alecmce.console.controller.RegisterConsoleActionCommand;
-    import alecmce.console.model.ConsoleModel;
+    import alecmce.console.model.Console;
     import alecmce.console.signals.AddDefaultConsoleActions;
     import alecmce.console.signals.ClearConsole;
     import alecmce.console.signals.ConsoleLog;
@@ -51,7 +51,7 @@ package alecmce.console
 
         private function mapModel():void
         {
-            injector.map(ConsoleModel).asSingleton();
+            injector.map(Console).asSingleton();
             injector.map(ConsoleLog).asSingleton();
             injector.map(RemoveConsole).asSingleton();
         }

@@ -4,12 +4,12 @@ package alecmce.console.model
 
     import org.osflash.signals.Signal;
 
-    final public class ConsoleModel
+    final public class Console
     {
         private var hash:ActionHash;
         private var history:ActionHistory;
 
-        public function ConsoleModel()
+        public function Console()
         {
             hash = new ActionHash();
             history = new ActionHistory();

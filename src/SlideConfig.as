@@ -73,27 +73,28 @@ package
             var rethink:Slide = makeRethinkingStructureSlide();
             var entities:Slide = makeEntitySystemsSlide();
 
-            intro.addTarget("rotmg", rotmg, 0x0099FF);
-            intro.addTarget("structure", structure);
+            intro.addSlideTarget("rotmg", rotmg, 0x0099FF);
+            intro.addSlideTarget("structure", structure);
+            intro.addActionTarget("invaders");
 
-            rotmg.addTarget("intro", intro);
+            rotmg.addSlideTarget("intro", intro);
 
-            structure.addTarget("intro", intro, 0xFF6666);
-            structure.addTarget("invaders", invaders);
+            structure.addSlideTarget("intro", intro, 0xFF6666);
+            structure.addSlideTarget("invaders", invaders);
 
-            invaders.addTarget("structure", structure, 0xFF6666);
-            invaders.addTarget("robotlegs", robotlegs);
+            invaders.addSlideTarget("structure", structure, 0xFF6666);
+            invaders.addSlideTarget("robotlegs", robotlegs);
 
-            robotlegs.addTarget("invaders", invaders, 0xFF6666);
-            robotlegs.addTarget("games", games);
+            robotlegs.addSlideTarget("invaders", invaders, 0xFF6666);
+            robotlegs.addSlideTarget("games", games);
 
-            games.addTarget("robotlegs", robotlegs, 0xFF6666);
-            games.addTarget("rethink", rethink);
+            games.addSlideTarget("robotlegs", robotlegs, 0xFF6666);
+            games.addSlideTarget("rethink", rethink);
 
-            rethink.addTarget("games", games, 0xFF6666);
-            rethink.addTarget("entities", entities);
+            rethink.addSlideTarget("games", games, 0xFF6666);
+            rethink.addSlideTarget("entities", entities);
 
-            entities.addTarget("rethink", rethink,  0xFF6666);
+            entities.addSlideTarget("rethink", rethink,  0xFF6666);
 
             slides = new Slides();
             slides.current = intro;

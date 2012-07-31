@@ -43,7 +43,7 @@ package talk.commands
 
         private function addNewSelected():void
         {
-            var slide:Slide = slides.current.getTarget(name);
+            var slide:Slide = slides.current.getSlideTarget(name);
             if (slide)
             {
                 slides.current = slide;

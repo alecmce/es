@@ -1,13 +1,14 @@
 package talk.view
 {
-    import alecmce.entitysystem.framework.Entities;
+    import alecmce.console.model.Console;
 
     import robotlegs.bender.bundles.mvcs.Mediator;
 
-    import talk.data.Slide;
+    import talk.data.ActionTarget;
+
     import talk.data.SlideTarget;
     import talk.data.Slides;
-
+    import talk.data.Target;
     import talk.signals.GotoSlide;
 
     public class ButtonsMediator extends Mediator
@@ -21,6 +22,9 @@ package talk.view
         [Inject]
         public var gotoSlide:GotoSlide;
 
+        [Inject]
+        public var console:Console;
+
         override public function initialize():void
         {
             view.selected.add(onSelected);
@@ -32,10 +36,16 @@ package talk.view
             view.selected.remove(onSelected);
         }
 
-        private function onSelected(name:String):void
+        private function onSelected(target:Target):void
         {
             view.clear();
-            gotoSlide.dispatch(name);
+
+            //FIXME this is shit
+            if (target is SlideTarget)
+                gotoSlide.dispatch(target.getName());
+            else if (target is ActionTarget)
+                console.execute(target.getName());
+
             updateTargets();
         }
 

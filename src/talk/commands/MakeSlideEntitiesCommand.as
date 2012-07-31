@@ -13,6 +13,7 @@ package talk.commands
     import talk.data.SlideImage;
     import talk.data.SlideTarget;
     import talk.data.Slides;
+    import talk.data.Target;
     import talk.factories.SlideCharacterEntityFactory;
 
     public class MakeSlideEntitiesCommand
@@ -118,8 +119,11 @@ package talk.commands
         private function makeTargets():void
         {
             var parent:Slide = current;
-            for each (var child:SlideTarget in parent.targets)
-                makeSlide(child.slide);
+            for each (var child:Target in parent.targets)
+            {
+                if (child is SlideTarget)
+                    makeSlide((child as SlideTarget).getSlide());
+            }
         }
     }
 }

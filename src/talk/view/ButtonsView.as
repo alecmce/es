@@ -2,8 +2,6 @@ package talk.view
 {
     import alecmce.resizing.view.Resizable;
 
-    import avmplus.implementsXml;
-
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.events.KeyboardEvent;
@@ -14,12 +12,13 @@ package talk.view
     import org.osflash.signals.Signal;
 
     import talk.data.SlideTarget;
+    import talk.data.Target;
 
     public class ButtonsView extends Sprite implements Resizable
     {
         private var list:Vector.<ButtonView>;
         private var rectangle:Rectangle;
-        private var targets:Vector.<SlideTarget>;
+        private var targets:Vector.<Target>;
 
         public var selected:Signal;
 
@@ -27,7 +26,7 @@ package talk.view
         {
             list = new <ButtonView>[];
 
-            selected = new Signal(String);
+            selected = new Signal(Target);
 
             addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
         }
@@ -43,7 +42,7 @@ package talk.view
             {
                 var key:int = event.keyCode - Keyboard.NUMBER_1;
                 if (key < targets.length)
-                    selected.dispatch(targets[key].name);
+                    selected.dispatch(targets[key]);
             }
         }
 
@@ -53,21 +52,21 @@ package talk.view
             updatePositions();
         }
 
-        public function setTargets(targets:Vector.<SlideTarget>):void
+        public function setTargets(targets:Vector.<Target>):void
         {
             this.targets = targets;
             var index:int = 1;
-            for each (var target:SlideTarget in targets)
+            for each (var target:Target in targets)
                 addName(index++, target);
 
             updatePositions();
         }
 
-        public function addName(index:int, target:SlideTarget):void
+        public function addName(index:int, target:Target):void
         {
             var button:ButtonView = new ButtonView();
             button.addEventListener(MouseEvent.CLICK, onClick);
-            button.setName(index, target.name, target.color);
+            button.setName(index, target.getName(), target.getColor());
             addChild(button);
             list.push(button);
         }

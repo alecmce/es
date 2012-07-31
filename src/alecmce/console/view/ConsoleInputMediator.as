@@ -1,6 +1,6 @@
 package alecmce.console.view
 {
-    import alecmce.console.model.ConsoleModel;
+    import alecmce.console.model.Console;
     import alecmce.console.signals.ConsoleLog;
 
     import robotlegs.bender.bundles.mvcs.Mediator;
@@ -14,7 +14,7 @@ package alecmce.console.view
         public var view:ConsoleInputView;
 
         [Inject]
-        public var console:ConsoleModel;
+        public var console:Console;
 
         [Inject]
         public var log:ConsoleLog;

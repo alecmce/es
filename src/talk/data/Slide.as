@@ -20,7 +20,7 @@ package talk.data
 
         public var points:Vector.<SlideText>;
         public var images:Vector.<SlideImage>;
-        public var targets:Vector.<SlideTarget>;
+        public var targets:Vector.<Target>;
 
         private var targetMap:Object;
 
@@ -28,7 +28,7 @@ package talk.data
         {
             points = new <SlideText>[];
             images = new <SlideImage>[];
-            targets = new <SlideTarget>[];
+            targets = new <Target>[];
             targetMap = {};
         }
 
@@ -41,21 +41,23 @@ package talk.data
             title.text = text;
         }
 
-        public function addTarget(name:String, slide:Slide, color:int = 0xFFFF66):void
+        public function addSlideTarget(name:String, slide:Slide, color:int = 0xFFFF66):void
         {
-            var target:SlideTarget = new SlideTarget();
-            target.name = name;
-            target.slide = slide;
-            target.color = color;
-
+            var target:SlideTarget = new SlideTarget(name, slide, color);
             targets.push(target);
             targetMap[name] = target;
         }
 
-        public function getTarget(name:String):Slide
+        public function addActionTarget(name:String,  color:int = 0x33FF33):void
+        {
+            var target:ActionTarget = new ActionTarget(name, color);
+            targets.push(target);
+        }
+
+        public function getSlideTarget(name:String):Slide
         {
             var target:SlideTarget = targetMap[name];
-            return target ? target.slide : null;
+            return target ? target.getSlide() : null;
         }
 
         public function addImage(x:int, y:int, data:BitmapData):void
