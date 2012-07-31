@@ -29,6 +29,7 @@ package
     import talk.commands.InvaderSlideEntitiesCommand;
     import talk.commands.StartupCommand;
     import talk.commands.StepSlideCommand;
+    import talk.commands.UnstepSlideCommand;
     import talk.factories.AssetFactory;
     import talk.factories.SlideCharacterEntityFactory;
     import talk.signals.MakeSlideStep;
@@ -44,6 +45,7 @@ package
     import talk.signals.SpaceInvadersVisible;
     import talk.signals.Startup;
     import talk.signals.StepSlide;
+    import talk.signals.UnstepSlide;
     import talk.systems.AnimationSystem;
     import talk.systems.BulletSystem;
     import talk.systems.CollapseSystem;
@@ -101,6 +103,7 @@ package
             commandMap.map(SetInvaderGraphics).toCommand(SetInvaderGraphicsCommand);
             commandMap.map(SetLetterGraphics).toCommand(SetLetterGraphicsCommand);
             commandMap.map(StepSlide).toCommand(StepSlideCommand);
+            commandMap.map(UnstepSlide).toCommand(UnstepSlideCommand);
 
             layers.console.addChild(new ConsoleView());
 
@@ -115,6 +118,7 @@ package
             makeInvaderAnimationsAction();
             makeLetterGraphicsAction();
             makeStepAction();
+            makeUnStepAction();
         }
 
         private function makeRiseAction():void
@@ -179,6 +183,14 @@ package
             action.name = "step";
             action.description = "increments the slide step";
             registerConsole.dispatch(action, injector.getInstance(StepSlide));
+        }
+
+        private function makeUnStepAction():void
+        {
+            var action:ConsoleAction = new ConsoleAction();
+            action.name = "unstep";
+            action.description = "decrements the slide step";
+            registerConsole.dispatch(action, injector.getInstance(UnstepSlide));
         }
     }
 }

@@ -7,6 +7,7 @@ package talk.commands
 
     import talk.data.Slide;
     import talk.data.SlideImage;
+    import talk.data.Step;
     import talk.factories.SlideCharacterEntityFactory;
 
     public class MakeSlideStepCommand
@@ -23,8 +24,12 @@ package talk.commands
         [Inject]
         public var slide:Slide;
 
+        private var step:int;
+
         public function execute():void
         {
+            this.step = slide.step;
+
             makeImageEntities();
             addEntities();
         }
@@ -37,7 +42,7 @@ package talk.commands
 
             for each (var image:SlideImage in slide.images)
             {
-                if (image.step == slide.step)
+                if (image.step == step)
                     makeImageEntity(image);
             }
         }
@@ -51,6 +56,7 @@ package talk.commands
             var entity:Entity = new Entity();
             entity.add(position);
             entity.add(image.data);
+            entity.add(new Step(step));
 
             entities.addEntity(entity);
         }
@@ -59,7 +65,10 @@ package talk.commands
         {
             var list:Vector.<Entity> = characterFactory.make(slide);
             for each (var entity:Entity in list)
+            {
+                entity.add(new Step(step));
                 entities.addEntity(entity);
+            }
         }
 
     }
