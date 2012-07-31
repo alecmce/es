@@ -4,11 +4,11 @@
 
     I want to talk to you today about Entity Systems. Some of you may know a lot about them, others little-to-nothing. That's ok; I'm going to keep this relatively high-level, talk about the ideas behind Entity Systems, what they do and why they're useful.
 
-# 
+# Object Oriented Thinking (5 - 10 mins)
 
-# Seeking Structure (5 - 10 mins)
+    Our brains are systems that receive and aggregate extraordinary amounts of data into a sophisticated model of the world. We parse a rapidly iterating stream of visual data into 
 
-    Our brains are systems that receive and aggregate extraordinary amounts of data into a sophisticated model of the world. Our brains are self-reflexive: they can and do model their own functioning and the functionality of others'. The story of how magnificently adept we are at imposing accurate structures onto the world is the story of human evolution.
+     Our brains are self-reflexive: they can and do model their own functioning and the functionality of others'. The story of how magnificently adept we are at imposing accurate structures onto the world is the story of human evolution.
 
     Developers 
 
