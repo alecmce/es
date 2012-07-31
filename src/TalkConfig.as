@@ -3,6 +3,8 @@ package
     import alecmce.console.signals.RegisterConsoleAction;
     import alecmce.console.view.ConsoleView;
     import alecmce.console.vo.ConsoleAction;
+    import alecmce.entitysystem.extensions.robotlegs.signals.StartAllSystems;
+    import alecmce.entitysystem.extensions.robotlegs.signals.StopAllSystems;
     import alecmce.entitysystem.extensions.view.Camera;
     import alecmce.entitysystem.extensions.view.display.DisplayUpdateSystem;
     import alecmce.fonts.BitmapFontDecoder;
@@ -119,6 +121,8 @@ package
             makeLetterGraphicsAction();
             makeStepAction();
             makeUnStepAction();
+            makeStopAction();
+            makeStartAction();
         }
 
         private function makeRiseAction():void
@@ -191,6 +195,22 @@ package
             action.name = "unstep";
             action.description = "decrements the slide step";
             registerConsole.dispatch(action, injector.getInstance(UnstepSlide));
+        }
+
+        private function makeStopAction():void
+        {
+            var action:ConsoleAction = new ConsoleAction();
+            action.name = "stop";
+            action.description = "stop all systems";
+            registerConsole.dispatch(action, injector.getInstance(StopAllSystems));
+        }
+
+        private function makeStartAction():void
+        {
+            var action:ConsoleAction = new ConsoleAction();
+            action.name = "start";
+            action.description = "start all systems";
+            registerConsole.dispatch(action, injector.getInstance(StartAllSystems));
         }
     }
 }
