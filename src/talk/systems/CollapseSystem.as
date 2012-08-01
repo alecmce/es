@@ -20,6 +20,7 @@ package talk.systems
     import talk.data.Collapsing;
     import talk.data.Debug;
     import talk.data.Slide;
+    import talk.data.Slides;
     import talk.factories.Box2dObjectFactory;
 
     public class CollapseSystem implements System
@@ -36,6 +37,9 @@ package talk.systems
 
         [Inject]
         public var layers:Layers;
+
+        [Inject]
+        public var slides:Slides;
 
         [Inject]
         public var debugModel:Debug;
@@ -118,8 +122,8 @@ package talk.systems
             collection.entityAdded.remove(addEntityToSimulation);
             collection.entityRemoved.remove(removeEntityFromSimulation);
 
-            if (debug)
-                layers.main.removeChild(debug);
+            if (debug && debug.parent)
+                debug.parent.removeChild(debug);
         }
 
         private function setupSimulation():void
@@ -146,6 +150,8 @@ package talk.systems
         {
             debug = new Sprite();
             layers.dialog.addChild(debug);
+            debug.x = slides.current.offsetX;
+            debug.y = slides.current.offsetY;
 
             drawer = new b2DebugDraw();
             drawer.SetSprite(debug);
