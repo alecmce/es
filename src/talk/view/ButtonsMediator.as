@@ -2,6 +2,8 @@ package talk.view
 {
     import alecmce.console.model.Console;
 
+    import flash.events.Event;
+
     import robotlegs.bender.bundles.mvcs.Mediator;
 
     import talk.data.ActionTarget;
@@ -28,12 +30,14 @@ package talk.view
         override public function initialize():void
         {
             view.selected.add(onSelected);
+            gotoSlide.add(onGotoSlide);
             updateTargets();
         }
 
         override public function destroy():void
         {
             view.selected.remove(onSelected);
+            gotoSlide.remove(onGotoSlide);
         }
 
         private function onSelected(target:Target):void
@@ -42,10 +46,30 @@ package talk.view
 
             //FIXME this is shit
             if (target is SlideTarget)
+            {
+                gotoSlide.remove(onGotoSlide);
                 gotoSlide.dispatch(target.getName());
+                gotoSlide.add(onGotoSlide);
+            }
             else if (target is ActionTarget)
+            {
                 console.execute(target.getName());
+            }
 
+            updateTargets();
+        }
+
+        private function onGotoSlide(name:String):void
+        {
+            view.clear();
+
+            //FIXME disgusting hack
+            view.addEventListener(Event.ENTER_FRAME, waitAFrame);
+        }
+
+        private function waitAFrame(event:Event):void
+        {
+            view.removeEventListener(Event.ENTER_FRAME, waitAFrame);
             updateTargets();
         }
 

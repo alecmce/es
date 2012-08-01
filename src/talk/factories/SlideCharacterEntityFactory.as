@@ -32,7 +32,9 @@ package talk.factories
             this.slide = slide;
             this.entities = new <Entity>[];
 
-            makeTextEntities(slide.title);
+            if (slide.title)
+                makeTextEntities(slide.title);
+
             for each (var text:SlideText in slide.points)
                 makeTextEntities(text);
 

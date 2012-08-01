@@ -56,7 +56,7 @@ package
                     .extend(ResizeExtension)
                     .configure(EntitiesConfig)
                     .configure(TalkConfig, this)
-                    .configure(SlideConfig, this);
+                    .configure(SlidesConfig, this);
 
             context.injector.getInstance(Startup).dispatch();
         }

@@ -17,7 +17,10 @@ package
 
     import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 
+    import talk.commands.ClearDebugCommand;
+
     import talk.commands.MakeSlideStepCommand;
+    import talk.commands.SetDebugCommand;
 
     import talk.commands.SetInvaderGraphicsCommand;
 
@@ -34,9 +37,12 @@ package
     import talk.commands.StartupCommand;
     import talk.commands.StepSlideCommand;
     import talk.commands.UnstepSlideCommand;
+    import talk.data.Debug;
     import talk.factories.AssetFactory;
     import talk.factories.SlideCharacterEntityFactory;
+    import talk.signals.ClearDebug;
     import talk.signals.MakeSlideStep;
+    import talk.signals.SetDebug;
     import talk.signals.SetInvaderGraphics;
     import talk.signals.AddSpaceship;
     import talk.signals.CollapseVisible;
@@ -82,6 +88,7 @@ package
             injector.map(Random);
             injector.map(DisplayUpdateSystem).asSingleton();
             injector.map(BitmapFonts).asSingleton();
+            injector.map(Debug).asSingleton();
 
             injector.map(RiseSystem).asSingleton();
             injector.map(CollapseSystem).asSingleton();
@@ -108,6 +115,8 @@ package
             commandMap.map(SetLetterGraphics).toCommand(SetLetterGraphicsCommand);
             commandMap.map(StepSlide).toCommand(StepSlideCommand);
             commandMap.map(UnstepSlide).toCommand(UnstepSlideCommand);
+            commandMap.map(SetDebug).toCommand(SetDebugCommand);
+            commandMap.map(ClearDebug).toCommand(ClearDebugCommand);
 
             layers.console.addChild(new ConsoleView());
 
@@ -123,13 +132,15 @@ package
             makeUnStepAction();
             makeStopAction();
             makeStartAction();
+            makeDebugAction();
+            makeNodebugAction();
         }
 
         private function makeCamera():void
         {
             var rect:Rectangle = layers.getSize();
-            var left:int = (SlideConfig.WIDTH - rect.width) * 0.5;
-            var top:int = (SlideConfig.HEIGHT - rect.height) * 0.5;
+            var left:int = (SlidesConfig.WIDTH - rect.width) * 0.5;
+            var top:int = (SlidesConfig.HEIGHT - rect.height) * 0.5;
             var camera:Camera = new Camera(left, top, rect.width, rect.height);
             injector.map(Camera).toValue(camera);
         }
@@ -185,7 +196,7 @@ package
         private function makeGotoSlideAction():void
         {
             var action:ConsoleAction = new ConsoleAction();
-            action.name = "gotoSlide";
+            action.name = "goto";
             action.description = "goes to a given slide index";
             registerConsole.dispatch(action, injector.getInstance(GotoSlide));
         }
@@ -219,6 +230,22 @@ package
             var action:ConsoleAction = new ConsoleAction();
             action.name = "start";
             action.description = "start all systems";
+            registerConsole.dispatch(action, injector.getInstance(StartAllSystems));
+        }
+
+        private function makeDebugAction():void
+        {
+            var action:ConsoleAction = new ConsoleAction();
+            action.name = "debug";
+            action.description = "debug the collapse physics";
+            registerConsole.dispatch(action, injector.getInstance(StartAllSystems));
+        }
+
+        private function makeNodebugAction():void
+        {
+            var action:ConsoleAction = new ConsoleAction();
+            action.name = "nodebug";
+            action.description = "stop debugging the collapse physics";
             registerConsole.dispatch(action, injector.getInstance(StartAllSystems));
         }
     }

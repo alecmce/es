@@ -18,6 +18,7 @@ package talk.systems
     import flash.geom.Rectangle;
 
     import talk.data.Collapsing;
+    import talk.data.Debug;
     import talk.data.Slide;
     import talk.factories.Box2dObjectFactory;
 
@@ -30,13 +31,14 @@ package talk.systems
         private const WIDTH_SCALAR:Number = 0.6;
         private const HEIGHT_SCALAR:Number = 0.5;
 
-        public var isDebug:Boolean = false;
-
         [Inject]
         public var entities:Entities;
 
         [Inject]
         public var layers:Layers;
+
+        [Inject]
+        public var debugModel:Debug;
 
         private var collection:Collection;
         private var node:Node;
@@ -59,7 +61,7 @@ package talk.systems
         {
             setupSimulation();
 
-            if (isDebug)
+            if (debugModel.isDebug)
                 addDebugRendering();
 
             for (node = collection.head; node; node = node.next)
@@ -73,7 +75,7 @@ package talk.systems
         {
             simulation.Step(delta * 0.001, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
 
-            if (isDebug)
+            if (debugModel.isDebug)
                 simulation.DrawDebugData();
 
             for (node = collection.head; node; node = node.next)
@@ -127,7 +129,7 @@ package talk.systems
             simulation = new b2World(gravity, true);
             factory.setWorld(simulation);
 
-            var rect:Rectangle = layers.getSize().clone();
+            var rect:Rectangle = new Rectangle(0, 0, 800, 600);
             rect.left *= TO_SIMULATION;
             rect.top *= TO_SIMULATION;
             rect.right *= TO_SIMULATION;

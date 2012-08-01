@@ -1,11 +1,13 @@
 package talk.commands
 {
     import alecmce.entitysystem.extensions.view.Position;
+    import alecmce.entitysystem.extensions.view.display.Display;
     import alecmce.entitysystem.framework.Entities;
     import alecmce.entitysystem.framework.Entity;
     import alecmce.fonts.BitmapFonts;
 
     import talk.data.Slide;
+    import talk.data.SlideFlash;
     import talk.data.SlideImage;
     import talk.data.Step;
     import talk.factories.SlideCharacterEntityFactory;
@@ -31,6 +33,7 @@ package talk.commands
             this.step = slide.step;
 
             makeImageEntities();
+            makeFlashEntities();
             addEntities();
         }
 
@@ -56,6 +59,36 @@ package talk.commands
             var entity:Entity = new Entity();
             entity.add(position);
             entity.add(image.data);
+            entity.add(new Step(step));
+
+            entities.addEntity(entity);
+        }
+
+        private function makeFlashEntities():void
+        {
+            var flashes:Vector.<SlideFlash> = slide.flashes;
+            if (!flashes)
+                return;
+
+            for each (var flash:SlideFlash in slide.flashes)
+            {
+                if (flash.step == step)
+                    makeFlashEntity(flash);
+            }
+        }
+
+        private function makeFlashEntity(flash:SlideFlash):void
+        {
+            var position:Position = new Position();
+            position.x = flash.x + slide.x;
+            position.y = flash.y + slide.y;
+
+            var display:Display = new Display();
+            display.object = flash.data;
+
+            var entity:Entity = new Entity();
+            entity.add(position);
+            entity.add(display);
             entity.add(new Step(step));
 
             entities.addEntity(entity);

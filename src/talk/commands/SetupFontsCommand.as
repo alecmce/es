@@ -14,6 +14,9 @@ package talk.commands
         [Embed(source="../../../assets/Cochin50.fnt", mimeType="application/octet-stream")]
         private var BodyFont:Class;
 
+        [Embed(source="../../../assets/Cochin40.fnt", mimeType="application/octet-stream")]
+        private var SmallFont:Class;
+
         [Inject]
         public var decoder:BitmapFontDecoder;
 
@@ -24,6 +27,7 @@ package talk.commands
         {
             extractFont("title", TitleFont);
             extractFont("body", BodyFont);
+            extractFont("small", SmallFont);
         }
 
         private function extractFont(name:String, FontClass:Class):void

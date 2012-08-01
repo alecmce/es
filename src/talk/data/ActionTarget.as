@@ -20,5 +20,10 @@ package talk.data
         {
             return color;
         }
+
+        public function getPriority():int
+        {
+            return 0;
+        }
     }
 }

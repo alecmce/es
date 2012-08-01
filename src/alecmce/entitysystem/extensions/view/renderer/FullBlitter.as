@@ -14,7 +14,7 @@ package alecmce.entitysystem.extensions.view.renderer
 
     public class FullBlitter implements Renderer
     {
-        private static const PADDING:int = 100;
+        private static const PADDING:int = 200;
 
         [Inject]
         public var entities:Entities;

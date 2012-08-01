@@ -55,11 +55,18 @@ package talk.view
         public function setTargets(targets:Vector.<Target>):void
         {
             this.targets = targets;
+            this.targets.sort(compareByPriority);
+
             var index:int = 1;
             for each (var target:Target in targets)
                 addName(index++, target);
 
             updatePositions();
+        }
+
+        private function compareByPriority(a:Target, b:Target):int
+        {
+            return b.getPriority() - a.getPriority();
         }
 
         public function addName(index:int, target:Target):void

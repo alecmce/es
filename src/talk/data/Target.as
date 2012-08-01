@@ -4,5 +4,6 @@ package talk.data
     {
         function getName():String;
         function getColor():int;
+        function getPriority():int;
     }
 }
