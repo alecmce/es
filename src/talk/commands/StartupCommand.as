@@ -15,6 +15,7 @@ package talk.commands
     import talk.systems.HitSystem;
     import talk.systems.KeyMovementSystem;
     import talk.systems.SlideSelectionSystem;
+    import talk.view.BackgroundFill;
 
     public class StartupCommand
     {
@@ -72,7 +73,9 @@ package talk.commands
             makeCamera.dispatch();
             makeSlideEntities.dispatch();
 
-            displayUpdater.setContainer(layers.main);
+            layers.background.addChild(new BackgroundFill());
+
+            displayUpdater.setContainer(layers.background);
             renderer.setCanvas(layers.canvas.bitmapData);
 
             startSystem.dispatch(renderer);

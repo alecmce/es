@@ -2,7 +2,7 @@ package
 {
     import alecmce.entitysystem.framework.Entities;
     import alecmce.entitysystem.framework.Entity;
-    import alecmce.graphics.Brush;
+    import alecmce.graphics.Paint;
 
     import flash.display.BitmapData;
 
@@ -68,7 +68,7 @@ package
         [Inject]
         public var entities:Entities;
 
-        private var brush:Brush;
+        private var paint:Paint;
         private var slides:Slides;
         private var list:Vector.<Slide>;
 
@@ -95,10 +95,12 @@ package
 
         private function makeBrush():void
         {
-            brush = new Brush();
-            brush.width = 2;
-            brush.rgb = 0x000000;
-            brush.alpha = 1;
+            paint = new Paint();
+            paint.width = 2;
+            paint.lineColor = 0x000000;
+            paint.lineAlpha = 1;
+            paint.fillColor = 0xFFFFFF;
+            paint.fillAlpha = 1;
         }
 
         private function makeSlides():void
@@ -165,7 +167,7 @@ package
         {
             var rotmg:BitmapData = new RotmgAsset().bitmapData;
 
-            var slide:Slide = makeSlide(0, 1, name);
+            var slide:Slide = makeSlide(x, y, name);
             slide.setTitle(45, 25, "Realm of the Mad God");
             slide.addImage((WIDTH - rotmg.width) * 0.5, 150, rotmg);
             return slide;
@@ -375,7 +377,7 @@ package
             slide.width = WIDTH;
             slide.height = HEIGHT;
             slide.insetOutline = INSET_OUTLINE;
-            slide.border = brush;
+            slide.border = paint;
             list.push(slide);
             return slide;
         }

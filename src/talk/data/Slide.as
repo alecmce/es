@@ -1,7 +1,7 @@
 package talk.data
 {
     import alecmce.entitysystem.framework.Entity;
-    import alecmce.graphics.Brush;
+    import alecmce.graphics.Paint;
 
     import flash.display.BitmapData;
     import flash.display.DisplayObject;
@@ -19,7 +19,7 @@ package talk.data
         public var height:int;
 
         public var title:SlideText;
-        public var border:Brush;
+        public var border:Paint;
         public var insetOutline:int;
 
         public var points:Vector.<SlideText>;
