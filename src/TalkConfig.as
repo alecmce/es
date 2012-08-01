@@ -11,6 +11,8 @@ package
     import alecmce.fonts.BitmapFonts;
     import alecmce.math.Random;
 
+    import flash.geom.Rectangle;
+
     import org.swiftsuspenders.Injector;
 
     import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
@@ -109,9 +111,7 @@ package
 
             layers.console.addChild(new ConsoleView());
 
-            var camera:Camera = new Camera(0, 0, 800, 600);
-            injector.map(Camera).toValue(camera);
-
+            makeCamera();
             makeRiseAction();
             makeCollapseAction();
             makeSpaceInvaderAction();
@@ -123,6 +123,15 @@ package
             makeUnStepAction();
             makeStopAction();
             makeStartAction();
+        }
+
+        private function makeCamera():void
+        {
+            var rect:Rectangle = layers.getSize();
+            var left:int = (SlideConfig.WIDTH - rect.width) * 0.5;
+            var top:int = (SlideConfig.HEIGHT - rect.height) * 0.5;
+            var camera:Camera = new Camera(left, top, rect.width, rect.height);
+            injector.map(Camera).toValue(camera);
         }
 
         private function makeRiseAction():void

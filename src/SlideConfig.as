@@ -16,6 +16,11 @@ package
 
     public class SlideConfig
     {
+        public static const WIDTH:int = 800;
+        public static const HEIGHT:int = 600;
+        public static const PADDING:int = 100;
+        public static const INSET_OUTLINE:int = 5;
+
         [Embed(source="../assets/rotmg.png", mimeType="image/png")]
         public static const RotmgAsset:Class;
 
@@ -35,6 +40,9 @@ package
         private var slides:Slides;
         private var list:Vector.<Slide>;
 
+        private var offsetX:int;
+        private var offsetY:int;
+
         public function SlideConfig()
         {
             list = new <Slide>[];
@@ -43,6 +51,9 @@ package
         [PostConstruct]
         public function setup():void
         {
+            offsetX = (layers.getSize().width - WIDTH) * .5;
+            offsetY = (layers.getSize().height - HEIGHT) * .5;
+
             makeBrush();
             makeSlides();
             makeSlideEntities();
@@ -99,11 +110,13 @@ package
         private function makeSlide(x:int, y:int):Slide
         {
             var slide:Slide = new Slide();
-            slide.x = x * 800;
-            slide.y = y * 600;
-            slide.width = 800;
-            slide.height = 600;
-            slide.padding = 5;
+            slide.x = x * (WIDTH + PADDING);
+            slide.y = y * (HEIGHT + PADDING);
+            slide.offsetX = offsetX;
+            slide.offsetY = offsetY;
+            slide.width = WIDTH;
+            slide.height = HEIGHT;
+            slide.insetOutline = INSET_OUTLINE;
             slide.border = brush;
             list.push(slide);
             return slide;

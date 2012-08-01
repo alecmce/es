@@ -69,10 +69,10 @@ package talk.commands
             position.y = current.y;
 
             var rectangle:Rectangle = new Rectangle();
-            rectangle.x = current.padding;
-            rectangle.y = current.padding;
-            rectangle.width = current.width - current.padding * 2;
-            rectangle.height = current.height - current.padding * 2;
+            rectangle.x = current.insetOutline;
+            rectangle.y = current.insetOutline;
+            rectangle.width = current.width - current.insetOutline * 2;
+            rectangle.height = current.height - current.insetOutline * 2;
 
             var sprite:Sprite = new Sprite();
             sprite.x = current.x;

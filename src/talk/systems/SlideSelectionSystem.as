@@ -83,8 +83,8 @@ package talk.systems
 
             startX = camera.left;
             startY = camera.top;
-            deltaX = slide.x - startX;
-            deltaY = slide.y - startY;
+            deltaX = (slide.x - slide.offsetX) - startX;
+            deltaY = (slide.y - slide.offsetY) - startY;
             value = 0;
         }
     }

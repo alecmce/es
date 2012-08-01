@@ -11,12 +11,14 @@ package talk.data
 
         public var x:int;
         public var y:int;
+        public var offsetX:int;
+        public var offsetY:int;
         public var width:int;
         public var height:int;
 
         public var title:SlideText;
         public var border:Brush;
-        public var padding:int;
+        public var insetOutline:int;
 
         public var points:Vector.<SlideText>;
         public var images:Vector.<SlideImage>;

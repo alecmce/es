@@ -9,6 +9,9 @@ package
     import flash.display.BitmapData;
     import flash.display.Sprite;
     import flash.display.Stage;
+    import flash.display.StageAlign;
+    import flash.display.StageDisplayState;
+    import flash.display.StageScaleMode;
     import flash.geom.Rectangle;
 
     import robotlegs.bender.bundles.mvcs.MVCSBundle;
@@ -26,6 +29,10 @@ package
 
         public function Main()
         {
+            stage.scaleMode = StageScaleMode.NO_SCALE;
+            stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+            stage.align = StageAlign.TOP_LEFT;
+
             makeLayers();
             makeContext();
         }
