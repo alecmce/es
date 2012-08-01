@@ -14,6 +14,7 @@ package talk.commands
     import talk.data.Selected;
     import talk.data.Slide;
     import talk.data.Slides;
+    import talk.data.Spaceship;
     import talk.factories.AssetFactory;
 
     public class AddSpaceshipCommand
@@ -35,7 +36,6 @@ package talk.commands
 
             var slide:Slide = getSelectedSlide();
             var controls:KeyControls = new KeyControls();
-            controls.limits = new Rectangle(slide.x + 10, slide.height - 85, slide.width - 95, 1);
             controls.delta = 5;
 
             var gun:Gun = new Gun();
@@ -46,6 +46,7 @@ package talk.commands
             gun.speed = 10;
 
             var entity:Entity = new Entity();
+            entity.add(new Spaceship());
             entity.add(position);
             entity.add(assets.makeSpaceship());
             entity.add(controls);

@@ -4,10 +4,12 @@ package talk.data
     {
         private var name:String;
         private var color:int;
+        private var priority:int;
 
-        public function ActionTarget(name:String, color:int)
+        public function ActionTarget(name:String, priority:int,  color:int)
         {
             this.name = name;
+            this.priority = priority;
             this.color = color;
         }
 
@@ -23,7 +25,7 @@ package talk.data
 
         public function getPriority():int
         {
-            return 0;
+            return priority;
         }
     }
 }

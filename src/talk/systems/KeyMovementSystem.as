@@ -8,10 +8,11 @@ package talk.systems
     import alecmce.entitysystem.framework.System;
 
     import flash.events.KeyboardEvent;
-    import flash.geom.Rectangle;
     import flash.ui.Keyboard;
 
     import talk.data.KeyControls;
+    import talk.data.Slide;
+    import talk.data.Slides;
 
     public class KeyMovementSystem implements System
     {
@@ -21,13 +22,15 @@ package talk.systems
         [Inject]
         public var layers:Layers;
 
+        [Inject]
+        public var slides:Slides
+
         private var collection:Collection;
         private var node:Node;
 
         private var entity:Entity;
         private var position:Position;
         private var controls:KeyControls;
-        private var limits:Rectangle;
 
         private var left:Boolean;
         private var right:Boolean;
@@ -100,26 +103,27 @@ package talk.systems
 
         public function update(time:int, delta:int):void
         {
+            var current:Slide = slides.current;
+
             for (node = collection.head; node; node = node.next)
             {
                 entity = node.entity;
                 position = entity.get(Position);
                 controls = entity.get(KeyControls);
-                limits = controls.limits;
 
                 left && (position.x -= controls.delta);
                 right && (position.x += controls.delta);
                 up && (position.y -= controls.delta);
                 down && (position.y += controls.delta);
 
-                if (position.x < limits.left)
+                if (position.x < current.x + 10)
                     position.x += controls.delta;
-                else if (position.x > limits.right)
+                else if (position.x > current.x + current.width - 95)
                     position.x -= controls.delta;
 
-                if (position.y < limits.top)
+                if (position.y < current.y + 1)
                     position.y += controls.delta;
-                else if (position.y > limits.bottom)
+                else if (position.y > current.y + current.height - 85)
                     position.y -= controls.delta;
             }
         }

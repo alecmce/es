@@ -62,6 +62,7 @@ package
     import talk.systems.FiringSystem;
     import talk.systems.HitSystem;
     import talk.systems.KeyMovementSystem;
+    import talk.systems.RemoveSpaceship;
     import talk.systems.RiseSystem;
     import talk.systems.SlideSelectionSystem;
 
@@ -125,6 +126,7 @@ package
             makeCollapseAction();
             makeSpaceInvaderAction();
             makeSpaceshipAction();
+            makeNospaceshipAction();
             makeGotoSlideAction();
             makeInvaderAnimationsAction();
             makeLetterGraphicsAction();
@@ -175,6 +177,14 @@ package
             action.name = "spaceship";
             action.description = "makes a spaceship";
             registerConsole.dispatch(action, injector.getInstance(AddSpaceship));
+        }
+
+        private function makeNospaceshipAction():void
+        {
+            var action:ConsoleAction = new ConsoleAction();
+            action.name = "nospaceship";
+            action.description = "removes the spaceship";
+            registerConsole.dispatch(action, injector.getInstance(RemoveSpaceship));
         }
 
         private function makeInvaderAnimationsAction():void

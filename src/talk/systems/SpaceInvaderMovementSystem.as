@@ -15,7 +15,7 @@ package talk.systems
 
     public class SpaceInvaderMovementSystem implements System
     {
-        private const INITIAL_STEP_INTERVAL:int = 1000;
+        private const INITIAL_STEP_INTERVAL:int = 500;
         private const STEPS_BEFORE_CHANGING_INTERVAL:int = 10;
         private const DELTA_INTERVAL:int = -25;
         private const PADDING_X:int = 25;
@@ -25,9 +25,6 @@ package talk.systems
 
         [Inject]
         public var entities:Entities;
-
-        [Inject]
-        public var layers:Layers;
 
         private var grid:SpaceInvaders;
         private var collection:Collection;
@@ -54,7 +51,7 @@ package talk.systems
             this.lastStepped = 0;
             this.isMovingRight = 1;
 
-            columns = int((layers.getSize().width - 10) / SPACING);
+            columns = int(790 / SPACING);
 
             grid = new SpaceInvaders();
             for (node = collection.head; node; node = node.next)
@@ -94,7 +91,7 @@ package talk.systems
                 updateStepsWithCurrentInterval();
                 updateInvaderPosition();
 
-                this.lastStepped += stepInterval;
+                this.lastStepped = time;
             }
         }
 

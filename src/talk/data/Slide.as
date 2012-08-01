@@ -55,9 +55,9 @@ package talk.data
             targetMap[name] = target;
         }
 
-        public function addAction(name:String,  color:int = 0xFFEE00):void
+        public function addAction(name:String, priority:int,  color:int = 0xFFEE00):void
         {
-            var target:ActionTarget = new ActionTarget(name, color);
+            var target:ActionTarget = new ActionTarget(name, priority, color);
             targets.push(target);
         }
 
