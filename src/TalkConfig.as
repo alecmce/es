@@ -20,6 +20,7 @@ package
     import talk.commands.ClearDebugCommand;
 
     import talk.commands.MakeSlideStepCommand;
+    import talk.commands.RemoveSpaceshipCommand;
     import talk.commands.SetDebugCommand;
 
     import talk.commands.SetInvaderGraphicsCommand;
@@ -31,6 +32,7 @@ package
     import talk.commands.MakeSlidesCommand;
     import talk.commands.RemoveSelectedSlideSystemsCommand;
     import talk.commands.RiseSlideEntitiesCommand;
+    import talk.commands.SetKittenGraphicsCommand;
     import talk.commands.SetLetterGraphicsCommand;
     import talk.commands.SetupFontsCommand;
     import talk.commands.InvaderSlideEntitiesCommand;
@@ -50,6 +52,7 @@ package
     import talk.signals.MakeSlides;
     import talk.signals.RemoveSelectedSlideSystems;
     import talk.signals.RiseVisible;
+    import talk.signals.SetKittenGraphics;
     import talk.signals.SetLetterGraphics;
     import talk.signals.SetupFonts;
     import talk.signals.SpaceInvadersVisible;
@@ -118,6 +121,8 @@ package
             commandMap.map(UnstepSlide).toCommand(UnstepSlideCommand);
             commandMap.map(SetDebug).toCommand(SetDebugCommand);
             commandMap.map(ClearDebug).toCommand(ClearDebugCommand);
+            commandMap.map(RemoveSpaceship).toCommand(RemoveSpaceshipCommand);
+            commandMap.map(SetKittenGraphics).toCommand(SetKittenGraphicsCommand);
 
             layers.console.addChild(new ConsoleView());
 
@@ -136,6 +141,7 @@ package
             makeStartAction();
             makeDebugAction();
             makeNodebugAction();
+            makeKittenAction();
         }
 
         private function makeCamera():void
@@ -248,7 +254,7 @@ package
             var action:ConsoleAction = new ConsoleAction();
             action.name = "debug";
             action.description = "debug the collapse physics";
-            registerConsole.dispatch(action, injector.getInstance(StartAllSystems));
+            registerConsole.dispatch(action, injector.getInstance(SetDebug));
         }
 
         private function makeNodebugAction():void
@@ -256,7 +262,15 @@ package
             var action:ConsoleAction = new ConsoleAction();
             action.name = "nodebug";
             action.description = "stop debugging the collapse physics";
-            registerConsole.dispatch(action, injector.getInstance(StartAllSystems));
+            registerConsole.dispatch(action, injector.getInstance(ClearDebug));
+        }
+
+        private function makeKittenAction():void
+        {
+            var action:ConsoleAction = new ConsoleAction();
+            action.name = "kittens";
+            action.description = "make current slide kittens";
+            registerConsole.dispatch(action, injector.getInstance(SetKittenGraphics));
         }
     }
 }

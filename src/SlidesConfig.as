@@ -180,7 +180,10 @@ package
             slide.addPoint(100, 200, "Code like we think", 1);
             slide.addPoint(100, 280, "Structure is king", 2);
             slide.addPoint(100, 360, "Model View Controller", 3);
-            slide.addAction("step", 0);
+            slide.addAction("step", 30);
+            slide.addAction("spaceship", 20);
+            slide.addAction("nospaceship", 10);
+            slide.addAction("letters", 0);
             return slide;
         }
 
@@ -293,11 +296,10 @@ package
         {
             var slide:Slide = makeSlide(x, y, name);
             slide.setTitle(20, 20, "Entity Systems");
-            slide.addPoint(50, 100, "Few dependencies", 0, true);
-            slide.addPoint(50, 150, "Aids creativity", 0, true);
-            slide.addPoint(50, 200, "Serialization", 0, true);
-            slide.addPoint(50, 250, "Perfect for games", 0, true);
-            slide.addPoint(50, 300, "(Not for slideshows)", 0, true);
+            slide.addPoint(100, 150, "Few dependencies");
+            slide.addPoint(100, 230, "Aids creativity");
+            slide.addPoint(100, 310, "Serialization");
+            slide.addPoint(100, 390, "Perfect for arcade games");
             slide.addAction("collapse", 100);
             slide.addAction("rise", 90);
             slide.addAction("spaceship", 80);

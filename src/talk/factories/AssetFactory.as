@@ -15,10 +15,14 @@ package talk.factories
         [Embed(source="../../../assets/spaceinvaders.png", mimeType="image/png")]
         public static const InvaderAsset:Class;
 
+        [Embed(source="../../../assets/kitten.png", mimeType="image/png")]
+        public static const KittenAsset:Class;
+
         private const ORIGIN:Point = new Point();
 
         private var spaceship:BitmapData;
         private var bullet:BitmapData;
+        private var kitten:BitmapData;
         private var invader:Vector.<BitmapData>;
 
         public function makeSpaceship():BitmapData
@@ -29,6 +33,11 @@ package talk.factories
         public function makeBullet():BitmapData
         {
             return bullet ||= new BulletAsset().bitmapData;
+        }
+
+        public function makeKitten():BitmapData
+        {
+            return kitten ||= new KittenAsset().bitmapData;
         }
 
         public function makeInvader():Vector.<BitmapData>
