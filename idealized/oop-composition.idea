@@ -1,0 +1,26 @@
+class Spaceship
+{
+    public var renderable:Renderable,
+    public var positioned:Positioned,
+    public var collidable:Collidable,
+    public var keyboardInput:KeyboardInput
+}
+
+class Alien
+{
+    public var renderable:Renderable,
+    public var positioned:Positioned,
+    public var collidable:Collidable,
+    public var invaderAI:InvaderAI
+}
+
+class Bullet
+{
+    public var renderable:Renderable,
+    public var positioned:Positioned,
+    public var collidable:Collidable,
+    public var linearVelocity:LinearVelocity
+}
+
+
+

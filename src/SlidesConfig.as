@@ -128,26 +128,26 @@ package
             var rotmg:Slide = makeRealmSlide(1, 0, "rotmg");
 
             var structure:Slide = makeOopSlide(1, 1, "oop");
-            var movie:Slide = makeMovieSlide(2, 1, "movie");
-            var hegel:Slide = makeHegelQuoteSlide(3, 1, "hegel");
-            var colliding:Slide = makeCollisionSlide(4, 1, "colliding");
-            var bob:Slide = makeBobQuoteSlide(5, 1, "bob");
+            var hegel:Slide = makeHegelQuoteSlide(2, 1, "hegel");
+            var movie:Slide = makeMovieSlide(3, 1, "movie");
+//            var colliding:Slide = makeCollisionSlide(4, 1, "colliding");
 
-            var rethink:Slide = makeRethinkSlide(5, 2, "rethink");
-            var systems:Slide = makeSystemsSlide(5, 3, "systems");
+            var rethink:Slide = makeRethinkSlide(4, 1, "rethink");
+            var systems:Slide = makeSystemsSlide(4, 2, "systems");
             var rendering:Slide = makeRenderSystemSlide(4, 3, "render");
             var collision:Slide = makeCollisionSystemSlide(3, 3, "collisions");
             var input:Slide = makeInputSlide(2, 3, "keys");
             var adding:Slide = makeAddingAndRemoving(1, 3, "making");
+            var bob:Slide = makeBobQuoteSlide(0, 3, "bob");
 
-            var review:Slide = makeReviewSlide(0, 3, "review");
+            var review:Slide = makeReviewSlide(-1, 4, "review");
             var games:Slide = makeGamesSlide(-1, 3, "games");
             var ember:Slide = makeEmberSlide(-1, 2, "ember");
             var ash:Slide = makeAshSlide(-1, 1, "ash");
 
             return new <Slide>[intro, rotmg,
-                               structure, movie,  hegel, colliding, bob,
-                               rethink, systems, rendering, collision, input, adding,
+                               structure, hegel, movie,
+                               rethink, systems, rendering, collision, input, adding, bob,
                                review, games, ember, ash];
         }
 
@@ -298,7 +298,7 @@ package
             slide.setTitle(20, 20, "Entity Systems");
             slide.addPoint(100, 150, "Few dependencies");
             slide.addPoint(100, 230, "Aids creativity");
-            slide.addPoint(100, 310, "Serialization");
+            slide.addPoint(100, 310, "Serialization (Argonaut)");
             slide.addPoint(100, 390, "Perfect for arcade games");
             slide.addAction("collapse", 100);
             slide.addAction("rise", 90);

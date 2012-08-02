@@ -48,7 +48,7 @@ Many of you are probably skeptical about the narrative that I've just laid out. 
 
 ## Systems, not Objects
 
-...
+The languages that we code in are object-oriented. The way we see the world, our language, everything is geared towards thinking about the objects that w
 
 ### Space Invaders Revisited
 

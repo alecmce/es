@@ -1,0 +1,94 @@
+// haXey meta-code for an OOP-style SpaceInvaders
+
+// VALUE OBJECTS (AND TOKEN OBJECTS)
+
+class Position
+{
+    public var position:Point;
+}
+
+class Renderable
+{
+    public var source:BitmapData;
+}
+
+class Spaceship {}
+
+class Alien {}
+
+class Bullet {}
+
+// MAIN CLASS - configuration, then start, then iterate on a loop
+
+class Main
+{
+    public var renderables:Collection<Position, Renderable>;
+    public var spaceship:Collection<Position, Renderable, Spaceship>;
+    public var aliens:Collection<Position, Renderable, Alien>;
+    public var bullets:Collection<Position, Renderable, Bullet>;
+
+    ... // configuration happens
+
+    public function start()
+    {
+        setupKeyListeners();
+    }
+
+    public function iterate(time:Int, deltaTime:Int)
+    {
+        updateBullets(time, deltaTime);
+        updateAliens(time, deltaTime);
+        checkForAlienSpaceshipCollisions();
+        checkForBulletCollisions();
+        render();
+    }
+
+    function updateBullets(time:Int, deltaTime:Int)
+    {
+        for (bullet in bullets)
+            updateBulletPosition(bullet.position);
+    }
+
+    function updateAliens(time:Int, deltaTime:Int)
+    {
+        for (alien in aliens)
+            updateAlienPosition(alien.position);
+    }
+
+    function checkForAlienSpaceshipCollisions()
+    {
+        for (alien in aliens)
+        {
+            if (isCollision(alien, spaceship))
+            {
+                loseLifeAndReset();            
+            }
+        }
+    }
+
+    function checkForBulletCollisions()
+    {
+        for (bullet in bullets)
+        {
+            if (isCollision(bullet, spaceship))
+            {
+                loseLifeAndReset();
+            }
+            else for (alien in aliens)
+            {
+                if (isCollision(bullet, alien))
+                {
+                    removeObjectsAndIncrementScore(alien, bullet);
+                }
+            }
+        }
+    }
+
+    function render()
+    {
+        canvas.clear();
+
+        for (renderable in renderables)
+            render(renderable, canvas);
+    }
+}

@@ -1,0 +1,112 @@
+interface AI
+{
+    function update(time:int, deltaTime:int);
+}
+
+interface Renderable extends Position
+{
+    var source:BitmapData;
+}
+
+interface Position
+{
+    var point:Point;
+}
+
+interface Collidable
+{
+    function collidesWith(other:Collidable):Bool;
+    function handleCollision(other:Collidable):void;
+}
+
+interface KeyboardInput
+{
+    function addKeyListeners();
+}
+
+class Spaceship
+    implements Renderable,
+    implements Position,
+    implements Collidable,
+    implements KeyboardInput
+{ ... }
+
+class Alien
+    implements Renderable,
+    implements Position,
+    implements Collidable,
+    implements AI
+{ ... }
+
+class Bullet
+    implements Renderable,
+    implements Position,
+    implements Collidable,
+    implements AI
+{ ... }
+
+class Main
+{
+    public var all:Array<*>;
+    public var ai:Array<AI>;
+    public var inputs:Array<KeyboardInput>
+    public var :Array<Alien>;
+    public var bullets:Array<Bullet>;
+    public var collidables:Array<Collidable>;
+
+    public function start()
+    {
+        for (object in objects)
+        {
+            if (object is KeyboardInput)
+                object.addKeyListeners();
+        }
+    }
+
+    public function iterate(time:int, deltaTime:int)
+    {
+        for (object in objects)
+        {
+            if (object is AI)
+                (object as AI).update(time, deltaTime);
+
+            if (object is Collidable)
+            {
+                for (other in objects)
+                {
+                    if (other is Collidable)
+
+                }
+            }
+        }
+
+        for (alien in aliens)
+        {
+            alien.update(time, deltaTime);
+            if (alien.collidesWith(spaceship))
+            {
+                loseLifeAndReset();            
+            }
+        }
+
+        for (bullet in bullets)
+        {
+            bullet.update(time, deltaTime);
+            if (bullet.collidesWith(spaceship))
+            {
+                loseLifeAndReset();
+            }
+            else for (alien in aliens)
+            {
+                if (bullet.collidesWith(alien))
+                    removeObjectsAndIncreaseScore(alien, bullet);
+            }
+        }
+        
+        canvas.clear();
+        for (object in all)
+            object.render(canvas);  
+    }
+}
+
+

@@ -1,0 +1,74 @@
+class Spaceship
+{
+    public var position:Point;
+    public var source:BitmapData;
+
+    public function render(data:BitmapData) { ... }
+    public function collidesWith(other:*):Bool { ... }
+    public function addKeyListeners() { ... }
+}
+
+class Alien
+{
+    public var position:Point;
+    public var source:BitmapData;
+
+    public function render(data:BitmapData) { ... }
+    public function collidesWith(other:*):Bool { ... }
+    public function update(time:int, deltaTime:int):void { ... }
+}
+
+class Bullet
+{
+    public var position:Point;
+    public var source:BitmapData;
+
+    public function render(data:BitmapData) { ... }
+    public function collidesWith(other:*):Bool { ... }
+    public function update(time:int, deltaTime:int):void { ... }
+}
+
+class Main
+{
+    public var all:Array<*>;
+    public var spaceship:Spaceship;
+    public var aliens:Array<Alien>;
+    public var bullets:Array<Bullet>;
+    public var collidables:Array<*>;
+
+    public function start()
+    {
+        spaceship.addKeyListeners();
+    }
+
+    public function iterate(time:int, deltaTime:int)
+    {
+        for (alien in aliens)
+        {
+            alien.update(time, deltaTime);
+            if (alien.collidesWith(spaceship))
+            {
+                loseLifeAndReset();            
+            }
+        }
+
+        for (bullet in bullets)
+        {
+            bullet.update(time, deltaTime);
+            if (bullet.collidesWith(spaceship))
+            {
+                loseLifeAndReset();
+            }
+            else for (alien in aliens)
+            {
+                if (bullet.collidesWith(alien))
+                    removeObjectsAndIncreaseScore(alien, bullet);
+            }
+        }
+        
+        canvas.clear();
+        for (object in all)
+            object.render(canvas);  
+    }
+}
+
