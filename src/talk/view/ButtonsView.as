@@ -80,8 +80,12 @@ package talk.view
 
         private function onClick(event:MouseEvent):void
         {
-            var target:ButtonView = event.currentTarget as ButtonView;
-            selected.dispatch(target.getName());
+            var button:ButtonView = event.currentTarget as ButtonView;
+            for each (var target:Target in targets)
+            {
+                if (target.getName() == button.getName())
+                    selected.dispatch(target);
+            }
         }
 
         public function clear():void

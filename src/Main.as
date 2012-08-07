@@ -29,9 +29,9 @@ package
 
         public function Main()
         {
-            stage.scaleMode = StageScaleMode.NO_SCALE;
-            stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
-            stage.align = StageAlign.TOP_LEFT;
+//            stage.scaleMode = StageScaleMode.NO_SCALE;
+//            stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+//            stage.align = StageAlign.TOP_LEFT;
 
             makeLayers();
             makeContext();
